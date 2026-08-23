@@ -2,7 +2,7 @@
 //  UDBusTimeTable.swift
 //  UDBusTimeTable
 //
-//  Created by Erin Millard on 2026/08/10.
+//  Created by Cedric Millard on 2026/08/10.
 //
 
 import WidgetKit
@@ -13,8 +13,27 @@ import SwiftUI
 //        // Generate a list containing the contexts this widget is relevant in.
 //    }
 
-@main
 struct UDBusTimeTableWidget: Widget {
+    let kind: String = "UDBusTimeTableWidget"
+
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent:UDBusIntent.self, provider: UDBusProvider()) { entry in
+            if #available(iOS 17.0, *) {
+                UDBusWidgetView(entry: entry)
+                    .containerBackground(.fill.tertiary, for: .widget)
+            } else {
+                UDBusWidgetView(entry: entry)
+                    .padding()
+                    .background()
+            }
+        }
+        .configurationDisplayName("UD Bus Train Timetable Widget")
+        .description("Widget showing the next bus and connecting train from UD Ageo Plant towards Oomiya")
+        .supportedFamilies([.systemSmall, .accessoryRectangular])
+    }
+}
+
+/*struct UDBusTimeTableWidget: Widget {
     let kind: String = "UDBusTimeTableWidget"
 
     var body: some WidgetConfiguration {
@@ -28,11 +47,11 @@ struct UDBusTimeTableWidget: Widget {
                     .background()
             }
         }
-        .configurationDisplayName("UD Bus/Train Timetable Widget")
-        .description("Widget showing the next bus and connecting train from UD Ageo towards Oomiya")
+        .configurationDisplayName("UD Bus Train Timetable Widget")
+        .description("Widget showing the next bus and connecting train from UD Ageo Plant towards Oomiya")
         .supportedFamilies([.systemSmall])
     }
-}
+}*/
 
 #Preview(as: .systemSmall) {
     UDBusTimeTableWidget()

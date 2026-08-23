@@ -2,7 +2,7 @@
 //  UDBusTimeTableApp.swift
 //  UDBusTimeTable
 //
-//  Created by Erin Millard on 2026/08/19.
+//  Created by Cedric Millard on 2026/08/19.
 //
 
 import SwiftUI

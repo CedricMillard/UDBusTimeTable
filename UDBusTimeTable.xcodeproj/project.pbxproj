@@ -42,6 +42,7 @@
 		E4190C223035CC9C007429C3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E4190C243035CC9C007429C3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E4190C433035F1EE007429C3 /* UDBusTimeTableWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UDBusTimeTableWidgetExtension.entitlements; sourceTree = "<group>"; };
+		E4190CC5303ACC7B007429C3 /* UDBusCountDownWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UDBusCountDownWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -104,6 +105,7 @@
 		E4190BF73035CBA1007429C3 = {
 			isa = PBXGroup;
 			children = (
+				E4190CC5303ACC7B007429C3 /* UDBusCountDownWidgetExtension.entitlements */,
 				E4190C433035F1EE007429C3 /* UDBusTimeTableWidgetExtension.entitlements */,
 				E4190C023035CBA1007429C3 /* UDBusTimeTable */,
 				E4190C263035CC9C007429C3 /* UDBusTimeTableWidget */,
@@ -298,7 +300,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = FQPLASZ9YF;
+				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -362,7 +364,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = FQPLASZ9YF;
+				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -391,11 +393,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = UDBusTimeTable/UDBusTimeTable.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus-Train Timetable App";
+				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Timetable";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -426,11 +428,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = UDBusTimeTable/UDBusTimeTable.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus-Train Timetable App";
+				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Timetable";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -465,7 +467,7 @@
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UDBusTimeTableWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = UDBusTimeTableWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Time Table";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -496,7 +498,7 @@
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UDBusTimeTableWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = UDBusTimeTableWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Time Table";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

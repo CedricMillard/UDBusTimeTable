@@ -2,13 +2,22 @@
 //  ContentView.swift
 //  AgeoBusTimeTable
 //
-//  Created by Erin Millard on 2026/06/22.
+//  Created by Cedric Millard on 2026/06/22.
 //
 
 import SwiftUI
 import WidgetKit
 
 let today = Date()
+
+extension Bundle {
+    var appVersion: String {
+        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "-.-"
+    }
+    var buildNumber: String {
+        return infoDictionary?["CFBundleVersion"] as? String ?? "-"
+    }
+}
 
 struct ContentView: View {
     let hours: [Int] = [23] + Array(0...23) + [0]
@@ -154,7 +163,7 @@ struct HourlyContentView: View {
     
     var body: some View {
         
-        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
+        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
         let nextBusIndex = getNextBusToAgeo(iTime: currentTime, BusTimeBuffer: BusTimeBuffer)
         let nextBus = getBusFromIndex(iIndex: nextBusIndex)
         
@@ -274,6 +283,10 @@ struct SettingsView: View {
                 .italic()
                 .font(.footnote)
                 .foregroundColor(Color.gray)
+        Text("UDBusTimeTable version \(Bundle.main.appVersion).\(Bundle.main.buildNumber)")
+            .italic()
+            .font(.footnote)
+            .foregroundColor(Color.gray)
     }
 }
 

@@ -2,7 +2,7 @@
 //  UDBusEntries.swift
 //  UDBusTimeTableExtension
 //
-//  Created by Erin Millard on 2026/08/10.
+//  Created by Cedric Millard on 2026/08/10.
 //
 
 import WidgetKit

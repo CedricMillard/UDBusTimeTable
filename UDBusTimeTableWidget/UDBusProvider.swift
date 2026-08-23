@@ -2,7 +2,7 @@
 //  UDBusProvider.swift
 //  UDBusTimeTableExtension
 //
-//  Created by Erin Millard on 2026/08/10.
+//  Created by Cedric Millard on 2026/08/10.
 //
 
 import WidgetKit
@@ -16,7 +16,8 @@ func getSampleTimeTable() -> UDBusEntry
     return UDBusSampleEntry
 }
 
-struct UDBusProvider: TimelineProvider {
+
+/*struct UDBusProvider: TimelineProvider {
     
     func placeholder(in context: Context) -> UDBusEntry {
         return getSampleTimeTable()
@@ -62,4 +63,49 @@ struct UDBusProvider: TimelineProvider {
         let timeline = Timeline(entries: entries, policy: .after(timelineUpdateDate))
         completion(timeline)
     }
+}*/
+
+struct UDBusProvider: AppIntentTimelineProvider {
+    typealias Entry = UDBusEntry
+    typealias Intent = UDBusIntent
+    
+    func placeholder(in context: Context) -> UDBusEntry {
+        getSampleTimeTable()
+    }
+    
+    func snapshot(for configuration:UDBusIntent, in context: Context) async-> UDBusEntry {
+        
+        getSampleTimeTable()
+    }
+    
+    func timeline(for configuration:UDBusIntent, in context: Context) async -> Timeline<Entry> {
+        
+        var entries: [UDBusEntry] = []
+        
+        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        let currentDate = Date()
+        let currentHour = (Calendar.current.component(.hour, from: currentDate))
+        
+        let TrainTimeBuffer = configuration.TrainTimeBuffer
+        let BusTimeBuffer = configuration.BusTimeBuffer
+        let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku
+        
+        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
+        for item in lHourlyTables {
+            var refreshDate = currentDate
+            if item.prevBus.departureTime>0 {
+                let prevBusHour = item.prevBus.departureTime / 60
+                let prevBusMin = item.prevBus.departureTime % 60
+                let busDate = Calendar.current.date(bySettingHour: prevBusHour, minute: prevBusMin, second: 0, of: currentDate) ?? currentDate
+                refreshDate = Calendar.current.date(byAdding: .minute, value: 1-BusTimeBuffer, to: busDate) ?? currentDate
+            }
+            
+            let entry = UDBusEntry(date: refreshDate, timeTable: item)
+            entries.append(entry)
+        }
+        let roundedDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
+        let timelineUpdateDate = Calendar.current.date(byAdding: .hour, value: 1, to: roundedDate) ?? currentDate
+        return Timeline(entries: entries, policy: .after(timelineUpdateDate))
+    }
 }
+

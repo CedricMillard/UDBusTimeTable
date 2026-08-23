@@ -2,7 +2,7 @@
 //  TimeTables.swift
 //  AgeoBusTimeTable
 //
-//  Created by Erin Millard on 2026/06/22.
+//  Created by Cedric Millard on 2026/06/22.
 //
 
 import Foundation
@@ -63,19 +63,7 @@ let UDtoAgeo = [
                 BusData(departureTime:20*60+30,duration:10),
                 BusData(departureTime:20*60+45,duration:10),
                 
-                BusData(departureTime:21*60+00,duration:10),
-                
-                BusData(departureTime:21*60+15,duration:10),
-                BusData(departureTime:21*60+30,duration:10),
-                BusData(departureTime:21*60+45,duration:10),
-                BusData(departureTime:22*60+00,duration:10),
-                BusData(departureTime:22*60+15,duration:10),
-                BusData(departureTime:22*60+30,duration:10),
-                BusData(departureTime:22*60+45,duration:10),
-                BusData(departureTime:23*60+00,duration:10),
-                BusData(departureTime:23*60+15,duration:10),
-                BusData(departureTime:23*60+30,duration:10),
-                BusData(departureTime:23*60+45,duration:10)
+                BusData(departureTime:21*60+00,duration:10)
                 ]
 
 let TrainFromAgeo = [
