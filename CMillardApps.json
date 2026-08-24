@@ -1,0 +1,33 @@
+{
+    "name": "Apps by Cedric Millard",
+    "description": "Welcome to my source! Here you'll find all of my apps.",
+    "website": "https://cedricmillard.github.io/MyAppStore/",
+    "apps": [
+        {
+            "name": "UD Bus TimeTable",
+            "bundleIdentifier": "com.CMillard.UDBusTimeTable",
+            "developerName": "Cedric Millard",
+            "localizedDescription": "App to show the UD Bus timetable and connecting trains",
+            "iconURL": "https://cedricmillard.github.io/MyAppStore/UDBusIconT.png",
+            "tintColor": "#5CA399",
+            "screenshots": [
+                "https://cedricmillard.github.io/MyAppStore/UDBusTimeTable_MainScreen.png"
+            ],
+            "versions": [
+                {
+                    "version": "1.0.1",
+                    "date": "2026-08-23",
+                    "size": 1828400,
+                    "downloadURL": "https://cedricmillard.github.io/MyAppStore/UDBusTimeTable.ipa",
+                    "localizedDescription": "First Public Release including App, Widget and Countdown widget.",
+                    "minOSVersion": "12.0"
+                }
+            ],
+            "appPermissions": {
+                "entitlements": [
+                    "com.apple.security.application-groups"
+                ],
+            }
+        }
+    ]
+}

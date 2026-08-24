@@ -85,6 +85,7 @@ struct UDBusProvider: AppIntentTimelineProvider {
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
         let currentHour = (Calendar.current.component(.hour, from: currentDate))
+        let roundedDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
         
         let TrainTimeBuffer = configuration.TrainTimeBuffer
         let BusTimeBuffer = configuration.BusTimeBuffer
@@ -92,7 +93,7 @@ struct UDBusProvider: AppIntentTimelineProvider {
         
         let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
         for item in lHourlyTables {
-            var refreshDate = currentDate
+            var refreshDate = roundedDate
             if item.prevBus.departureTime>0 {
                 let prevBusHour = item.prevBus.departureTime / 60
                 let prevBusMin = item.prevBus.departureTime % 60
@@ -103,7 +104,6 @@ struct UDBusProvider: AppIntentTimelineProvider {
             let entry = UDBusEntry(date: refreshDate, timeTable: item)
             entries.append(entry)
         }
-        let roundedDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
         let timelineUpdateDate = Calendar.current.date(byAdding: .hour, value: 1, to: roundedDate) ?? currentDate
         return Timeline(entries: entries, policy: .after(timelineUpdateDate))
     }
