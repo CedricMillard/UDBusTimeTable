@@ -283,7 +283,7 @@ struct SettingsView: View {
                 .italic()
                 .font(.footnote)
                 .foregroundColor(Color.gray)
-        Text("UDBusTimeTable version \(Bundle.main.appVersion).\(Bundle.main.buildNumber)")
+        Text("UDBusTimeTable version \(Bundle.main.appVersion)")
             .italic()
             .font(.footnote)
             .foregroundColor(Color.gray)

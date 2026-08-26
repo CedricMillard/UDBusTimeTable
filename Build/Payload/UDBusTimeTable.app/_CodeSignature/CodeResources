@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		vWHdpAj1ym0WCZMETK440QbR+lw=
+		lo08hf4OrAJoYgzjzlDUvS2+LIc=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/Metadata.appintents/extract.actionsdata</key>
 		<data>
-		xYAUwGCeB6CW1K+Aoy+rZsvGX2Y=
+		JRECc/kk5NuiGbsOkydMG1Rljqg=
 		</data>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/Metadata.appintents/version.json</key>
 		<data>
@@ -38,11 +38,11 @@
 		</data>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/UDBusTimeTableWidgetExtension</key>
 		<data>
-		i1FTrSmbpsdkVzfCrqIpvKjFFfU=
+		UZ7tVH6slGv024nxRtB34D2hsSU=
 		</data>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/_CodeSignature/CodeResources</key>
 		<data>
-		8fyDU+cVCmPi1Ww3W/SynZ+x3WU=
+		qnR4h9mwDK72DYSd083bKbHNJ4E=
 		</data>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/embedded.mobileprovision</key>
 		<data>
@@ -87,7 +87,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			DCD3pB3MtfFXZv2oLmhCAYgXY6hmBMSASMmVNz9iMcs=
+			wPkRNK0GQAr8I3sgBdRFMUv2tmrYnYiRXAvkDiZ9aGo=
 			</data>
 		</dict>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/Metadata.appintents/version.json</key>
@@ -101,14 +101,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dDj63KFf/WIKCX+7NFtaHmZBJ6K1fJew2JOgLujwefk=
+			FqBUYQFc+FR9Zop2QfrWIqrAu3JSqfR8Gym8cMiYIk8=
 			</data>
 		</dict>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gNQ31fZMuR0qjbdVf/I+X8C23deqZ19MkKT5M5D7Ssw=
+			9RU1p6txSdz4CedG2K+5QBUGQflv3fiZ+gbeXmg48c8=
 			</data>
 		</dict>
 		<key>PlugIns/UDBusTimeTableWidgetExtension.appex/embedded.mobileprovision</key>

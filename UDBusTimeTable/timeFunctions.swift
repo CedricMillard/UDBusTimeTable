@@ -23,6 +23,16 @@ struct BusData: Hashable, Codable {
     var isActiveRedDays : Bool = true
 }
 
+struct CountDownDataRaw: Hashable, Codable {
+    let departureTime : Int
+    let updateTime : Int
+}
+
+struct CountDownDataEntry: Hashable, Codable {
+    let departureTime : Date
+    let updateTime : Date
+}
+
 struct TrainData: Hashable, Codable, Identifiable {
     let id = UUID()
     let departureTime : Int
@@ -209,16 +219,25 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, Avoi
 }
 
 func time2Date(iTime:Int) -> Date {
-    return Calendar.current.date(bySettingHour: iTime/60, minute: iTime%60, second: 0, of: Date()) ?? Date()
+    //In case we are past 24 hourss
+    let newTime:Int = iTime % (24*60)
+    var offset:Int = Int(iTime/(24*60))
+    
+    var output:Date = Calendar.current.date(bySettingHour: newTime/60, minute: newTime%60, second: 0, of: Date()) ?? Date()
+    if offset > 0 {
+        output = Calendar.current.date(byAdding: .day, value: offset, to: output)!
+    }
+    
+    return output
 }
 
 //Return the data needed for the widget for a full hour
 // iHour = hour (eg 18 for 18Hxx)
 // iBus = if true return but time, if false return train time
 // iAddOneExtra = add next bus from next hour for the widget
-func getBusOrTrainDatePerHour(iHour:Int, iBus: Bool, iAvoidShonanShinjuku: Bool, iAddOneExtra:Bool)->[Date] {
-    var listDates: [Date]=[]
-    var listTimes: [Int]=[]
+func getBusOrTrainDatePerHour(iHour:Int, iBus: Bool, iAvoidShonanShinjuku: Bool, iAddOneExtra:Bool)->[CountDownDataEntry] {
+    var listDates: [CountDownDataEntry]=[]
+    var listTimes: [CountDownDataRaw]=[]
     if(iBus) {
         listTimes = getBusTimePerHour(iHour: iHour, iAddOneExtra: iAddOneExtra)
     }
@@ -227,13 +246,7 @@ func getBusOrTrainDatePerHour(iHour:Int, iBus: Bool, iAvoidShonanShinjuku: Bool,
     }
     
     for item in listTimes {
-        //The bus is before requested time, so set it to tommorow
-        if Int(item/60)<iHour {
-            listDates.append(Calendar.current.date(byAdding: .hour, value: 24, to: time2Date(iTime: item)) ??  time2Date(iTime: item))
-        }
-        else {
-            listDates.append(time2Date(iTime: item))
-        }
+        listDates.append(CountDownDataEntry(departureTime: time2Date(iTime: item.departureTime), updateTime: time2Date(iTime: item.updateTime)) )
     }
     return listDates
 }
@@ -241,30 +254,41 @@ func getBusOrTrainDatePerHour(iHour:Int, iBus: Bool, iAvoidShonanShinjuku: Bool,
 //Return the list of bus departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next bus from next hour for the widget
-func getBusTimePerHour(iHour:Int, iAddOneExtra:Bool)->[Int] {
-    var listTimes: [Int]=[]
-    //If hour is before the first bus
+func getBusTimePerHour(iHour:Int, iAddOneExtra:Bool)->[CountDownDataRaw] {
+    var listTimes: [CountDownDataRaw]=[]
+    //If hour is before or after the first bus, add the first bus
     if iHour < Int(UDtoAgeo[0].departureTime/60) || iHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60){
+        //If we are past the next bus, add 24 hours to the bus time
+        var offset = 0
+        if iHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60){
+            offset = 24
+        }
         if iAddOneExtra {
-            listTimes.append(UDtoAgeo[0].departureTime)
+            listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[0].departureTime + offset * 60, updateTime: iHour*60))
         }
         return listTimes
     }
-
+    
+    var prevAdded = false
     //Go through the timetable to find suitable bus
     for i in 0..<UDtoAgeo.count {
         //If not adding extra, stop when current bus time is above hour
         //If add extra, continue until previous bus time display is on next hour
         if UDtoAgeo[i].departureTime>=(iHour+1)*60 {
             if iAddOneExtra {
-                listTimes.append(UDtoAgeo[i].departureTime)
+                listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i].departureTime, updateTime: i>0 ? UDtoAgeo[i-1].departureTime : Int(UDtoAgeo[i].departureTime/60)*60))
             }
                 break
         }
             
         if UDtoAgeo[i].departureTime>=iHour*60 {
         
-            listTimes.append(UDtoAgeo[i].departureTime)
+            if iAddOneExtra && !prevAdded && i>0 {
+                listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i-1].departureTime, updateTime: i-1>0 ? UDtoAgeo[i-2].departureTime : Int(UDtoAgeo[i-1].departureTime/60)*60))
+                prevAdded = true
+            }
+            
+            listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i].departureTime, updateTime: i>0 ? UDtoAgeo[i-1].departureTime : Int(UDtoAgeo[i].departureTime/60)*60))
         }
     }
     return listTimes
@@ -273,14 +297,18 @@ func getBusTimePerHour(iHour:Int, iAddOneExtra:Bool)->[Int] {
 //Return the list of train departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next train from next hour for the widget
-func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[Int] {
-    var listTimes: [Int]=[]
-    //If hour is before the first bus or after the last bus
+func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[CountDownDataRaw] {
+    var listTimes: [CountDownDataRaw]=[]
+    //If hour is before the first train or after the last train
     if iHour < Int(TrainFromAgeo[0].departureTime/60) || iHour > Int(TrainFromAgeo[TrainFromAgeo.count-1].departureTime/60){
         if iAddOneExtra {
+            var offset = 0
+            if iHour > Int(TrainFromAgeo[TrainFromAgeo.count-1].departureTime/60) {
+                offset = 24
+            }
             for i in 0..<TrainFromAgeo.count {
                 if !(iAvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
-                    listTimes.append(TrainFromAgeo[i].departureTime)
+                    listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i].departureTime + offset * 60, updateTime: i>0 ? TrainFromAgeo[i-1].departureTime : iHour*60))
                 }
                 if listTimes.count>0 {
                     break
@@ -289,7 +317,9 @@ func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool
         }
         return listTimes
     }
-
+    
+    var prevAdded = false
+    
     //Go through the timetable to find suitable train
     for i in 0..<TrainFromAgeo.count {
         //If not adding extra, stop when current train time is above hour
@@ -299,8 +329,8 @@ func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool
                 var found:Bool = false
                 var j:Int = i
                 while !found && j<TrainFromAgeo.count {
-                    if !(iAvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
-                        listTimes.append(TrainFromAgeo[i].departureTime)
+                    if !(iAvoidShonanShinjuku && TrainFromAgeo[j].isShonan) {
+                        listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[j].departureTime, updateTime: j>0 ? TrainFromAgeo[j-1].departureTime : Int(TrainFromAgeo[j].departureTime/60)*60))
                         found = true
                     }
                     j+=1
@@ -310,7 +340,13 @@ func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool
         }
             
         if TrainFromAgeo[i].departureTime>=iHour*60 && !(iAvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
-            listTimes.append(TrainFromAgeo[i].departureTime)
+            
+            if iAddOneExtra && !prevAdded && i>0 {
+                listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i-1].departureTime, updateTime: i-1>0 ? TrainFromAgeo[i-2].departureTime : Int(TrainFromAgeo[i-1].departureTime/60)*60))
+                prevAdded = true
+            }
+            
+            listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i].departureTime, updateTime: i>0 ? TrainFromAgeo[i-1].departureTime : Int(TrainFromAgeo[i].departureTime/60)*60))
         }
     }
     return listTimes

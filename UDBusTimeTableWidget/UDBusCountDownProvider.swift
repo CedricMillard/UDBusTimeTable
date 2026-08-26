@@ -40,17 +40,14 @@ struct UDBusCountDownProvider: AppIntentTimelineProvider {
         let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku
         
         
-        let listDates: [Date] = getBusOrTrainDatePerHour (iHour: currentHour, iBus: (CountDownType==UDBusCountDownType.bus),iAvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
-        
-        var prevDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
+        let listDates: [CountDownDataEntry] = getBusOrTrainDatePerHour (iHour: currentHour, iBus: (CountDownType==UDBusCountDownType.bus),iAvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
         
         for item in listDates {
-            
-            let entry = UDBusCountDownEntry(date: prevDate, targetDate: item, type: CountDownType)
+            //print("UDBusCountDownProvider \(CountDownType) \(item.departureTime.formatted(date: .numeric, time: .standard)) \(item.updateTime.formatted(date: .numeric, time: .standard))")
+            let entry = UDBusCountDownEntry(date: item.updateTime, targetDate: item.departureTime, type: CountDownType)
             entries.append(entry)
-            prevDate = item
-            
         }
+        
         let roundedDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
         let timelineUpdateDate = Calendar.current.date(byAdding: .hour, value: 1, to: roundedDate) ?? currentDate
         return Timeline(entries: entries, policy: .after(timelineUpdateDate))
