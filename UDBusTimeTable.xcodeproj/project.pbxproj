@@ -37,12 +37,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		137DDC9930443383007C4FD7 /* UDBusTimeTable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = UDBusTimeTable.xcodeproj; sourceTree = "<group>"; };
 		E4190C003035CBA1007429C3 /* UDBusTimeTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UDBusTimeTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4190C203035CC9C007429C3 /* UDBusTimeTableWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UDBusTimeTableWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4190C223035CC9C007429C3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E4190C243035CC9C007429C3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		E4190C433035F1EE007429C3 /* UDBusTimeTableWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UDBusTimeTableWidgetExtension.entitlements; sourceTree = "<group>"; };
-		E4190CC5303ACC7B007429C3 /* UDBusCountDownWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UDBusCountDownWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -102,11 +101,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		137DDC9C30443383007C4FD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E4190BF73035CBA1007429C3 = {
 			isa = PBXGroup;
 			children = (
-				E4190CC5303ACC7B007429C3 /* UDBusCountDownWidgetExtension.entitlements */,
-				E4190C433035F1EE007429C3 /* UDBusTimeTableWidgetExtension.entitlements */,
 				E4190C023035CBA1007429C3 /* UDBusTimeTable */,
 				E4190C263035CC9C007429C3 /* UDBusTimeTableWidget */,
 				E4190C213035CC9C007429C3 /* Frameworks */,
@@ -214,6 +218,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4190C013035CBA1007429C3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 137DDC9C30443383007C4FD7 /* Products */;
+					ProjectRef = 137DDC9930443383007C4FD7 /* UDBusTimeTable.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E4190BFF3035CBA1007429C3 /* UDBusTimeTable */,
@@ -408,7 +418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -443,7 +453,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -461,7 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = UDBusTimeTableWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/UDBusTimeTableWidget/UDBusTimeTableWidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
@@ -474,7 +484,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -492,7 +502,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = UDBusTimeTableWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/UDBusTimeTableWidget/UDBusTimeTableWidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
@@ -505,7 +515,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
