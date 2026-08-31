@@ -17,7 +17,8 @@ let stdBusDuration = 9
 
 let appGroupSuite = "group.CMillard.UDBusTimetable"
 
-struct BusData: Hashable, Codable {
+struct BusData: Hashable, Codable, Identifiable {
+    let id = UUID()
     let departureTime : Int
     let duration : Int
     var isActiveRedDays : Bool = true
@@ -58,10 +59,14 @@ func timeToString(iTime: Int) -> String {
     return sHour + ":" + sMin
 }
 
-func getBusFromIndex(iIndex: Int)->BusData {
+func getBusFromIndex(iIndex: Int, isBusToPlant:Bool = false)->BusData {
     var bus = BusData(departureTime:-1,duration:-1)
-    if iIndex>=0 && iIndex<UDtoAgeo.count {
-        bus = UDtoAgeo[iIndex]
+    var busList = UDtoAgeo
+    if isBusToPlant {
+        busList = AgeotoUD
+    }
+    if iIndex>=0 && iIndex<busList.count {
+        bus = busList[iIndex]
     }
     return bus
 }
@@ -71,6 +76,18 @@ func getNextBusToAgeo(iTime: Int, BusTimeBuffer:Int)->Int {
     var result = -1
     for i in 0..<UDtoAgeo.count {
         if iTime + BusTimeBuffer <= UDtoAgeo[i].departureTime {
+            result = i
+            break
+        }
+    }
+    return result
+}
+
+// Return the index of the best bus
+func getNextBusToPlant(iTime: Int)->Int {
+    var result = -1
+    for i in 0..<AgeotoUD.count {
+        if iTime <= AgeotoUD[i].departureTime {
             result = i
             break
         }
@@ -229,51 +246,88 @@ func time2Date(iTime:Int) -> Date {
 //Return the list of bus departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next bus from next hour for the widget
-func getBusTimePerHour(iHour:Int, iAddOneExtra:Bool)->[CountDownDataRaw] {
+func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false, iAddOneExtra:Bool)->[CountDownDataRaw] {
     var listTimes: [CountDownDataRaw]=[]
+    var busList = UDtoAgeo
+    if isBusToPlant {
+        busList = AgeotoUD
+    }
     //If hour is before or after the first bus, add the first bus
-    if iHour < Int(UDtoAgeo[0].departureTime/60) || iHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60){
+    if iHour < Int(busList[0].departureTime/60) || iHour > Int(busList[busList.count-1].departureTime/60){
         //If we are past the next bus, add 24 hours to the bus time
-        var offset = 0
-        if iHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60){
-            offset = 24
-        }
         if iAddOneExtra {
-            listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[0].departureTime + offset * 60, updateTime: iHour*60))
+            var offset = 0
+            if iHour > Int(busList[busList.count-1].departureTime/60){
+                offset = 24
+            }
+            listTimes.append(CountDownDataRaw(departureTime: busList[0].departureTime + offset * 60, updateTime: iHour*60))
         }
         return listTimes
     }
     
     var prevAdded = false
     //Go through the timetable to find suitable bus
-    for i in 0..<UDtoAgeo.count {
+    for i in 0..<busList.count {
         //If not adding extra, stop when current bus time is above hour
         //If add extra, continue until previous bus time display is on next hour
-        if UDtoAgeo[i].departureTime>=(iHour+1)*60 {
+        if busList[i].departureTime>=(iHour+1)*60 {
             if iAddOneExtra {
-                listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i].departureTime, updateTime: i>0 ? UDtoAgeo[i-1].departureTime : Int(UDtoAgeo[i].departureTime/60)*60))
+                listTimes.append(CountDownDataRaw(departureTime: busList[i].departureTime, updateTime: i>0 ? busList[i-1].departureTime : Int(busList[i].departureTime/60)*60))
             }
                 break
         }
             
-        if UDtoAgeo[i].departureTime>=iHour*60 {
+        if busList[i].departureTime>=iHour*60 {
         
             if iAddOneExtra && !prevAdded && i>0 {
-                listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i-1].departureTime, updateTime: i-1>0 ? UDtoAgeo[i-2].departureTime : Int(UDtoAgeo[i-1].departureTime/60)*60))
+                listTimes.append(CountDownDataRaw(departureTime: busList[i-1].departureTime, updateTime: i-1>0 ? busList[i-2].departureTime : Int(busList[i-1].departureTime/60)*60))
                 prevAdded = true
             }
             
-            listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[i].departureTime, updateTime: i>0 ? UDtoAgeo[i-1].departureTime : Int(UDtoAgeo[i].departureTime/60)*60))
+            listTimes.append(CountDownDataRaw(departureTime: busList[i].departureTime, updateTime: i>0 ? busList[i-1].departureTime : Int(busList[i].departureTime/60)*60))
         }
     }
 
     //If we are on the hour of the last bus, add tomorrow's first bus
-    if iHour == Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60) && iAddOneExtra {
-        listTimes.append(CountDownDataRaw(departureTime: UDtoAgeo[0].departureTime + 24 * 60, updateTime: listTimes.count>0 ? listTimes[listTimes.count-1].departureTime : iHour*60))
+    if iHour == Int(busList[busList.count-1].departureTime/60) && iAddOneExtra {
+        listTimes.append(CountDownDataRaw(departureTime: busList[0].departureTime + 24 * 60, updateTime: listTimes.count>0 ? listTimes[listTimes.count-1].departureTime : iHour*60))
     }
 
     return listTimes
 }
+
+
+//Return the list of bus departure time for a given hour
+// iHour = hour (eg 18 for 18Hxx)
+// iAddOneExtra = add next bus from next hour for the widget
+func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false)->[BusData] {
+    var listTimes: [BusData]=[]
+    var busList = UDtoAgeo
+    if isBusToPlant {
+        busList = AgeotoUD
+    }
+    //If hour is before or after the first bus, add the first bus
+    if iHour < Int(busList[0].departureTime/60) || iHour > Int(busList[busList.count-1].departureTime/60){
+        listTimes.append(BusData(departureTime: -1, duration: -1))
+        return listTimes
+    }
+    
+    //Go through the timetable to find suitable bus
+    for i in 0..<busList.count {
+        //If not adding extra, stop when current bus time is above hour
+        //If add extra, continue until previous bus time display is on next hour
+        if busList[i].departureTime>=(iHour+1)*60 {
+            break
+        }
+            
+        if busList[i].departureTime>=iHour*60 {
+            listTimes.append(busList[i])
+        }
+    }
+
+    return listTimes
+}
+
 
 //Return the list of train departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)

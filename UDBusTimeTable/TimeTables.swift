@@ -66,6 +66,55 @@ let UDtoAgeo = [
                 BusData(departureTime:21*60+00,duration:10)
                 ]
 
+let AgeotoUD = [
+                BusData(departureTime:06*60+50,duration:10),
+                
+                BusData(departureTime:07*60+00,duration:10),
+                BusData(departureTime:07*60+10,duration:10),
+                BusData(departureTime:07*60+20,duration:10),
+                BusData(departureTime:07*60+25,duration:10),
+                BusData(departureTime:07*60+33,duration:10),
+                BusData(departureTime:07*60+41,duration:10),
+                BusData(departureTime:07*60+50,duration:10),
+                BusData(departureTime:07*60+57,duration:10),
+                
+                BusData(departureTime:08*60+04,duration:10),
+                BusData(departureTime:08*60+12,duration:10),
+                BusData(departureTime:08*60+20,duration:10),
+                BusData(departureTime:08*60+27,duration:10),
+                BusData(departureTime:08*60+34,duration:10),
+                BusData(departureTime:08*60+43,duration:10),
+                BusData(departureTime:08*60+52,duration:10),
+                
+                BusData(departureTime:09*60+05,duration:10),
+                BusData(departureTime:09*60+15,duration:10),
+                BusData(departureTime:09*60+30,duration:10),
+                BusData(departureTime:09*60+45,duration:10),
+                
+                BusData(departureTime:10*60+00,duration:10),
+                BusData(departureTime:10*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:11*60+00,duration:10),
+                BusData(departureTime:11*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:12*60+00,duration:10),
+                BusData(departureTime:12*60+30,duration:10),
+                
+                BusData(departureTime:13*60+00,duration:10),
+                BusData(departureTime:13*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:14*60+00,duration:10),
+                BusData(departureTime:14*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:15*60+00,duration:10),
+                BusData(departureTime:15*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:16*60+00,duration:10),
+                BusData(departureTime:16*60+30,duration:10,isActiveRedDays:false),
+                
+                BusData(departureTime:17*60+00,duration:10)
+                ]
+
 let TrainFromAgeo = [
                      TrainData(departureTime:08*60+55,isShonan:false),
                      
