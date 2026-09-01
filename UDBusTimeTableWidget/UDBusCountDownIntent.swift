@@ -25,6 +25,42 @@ enum UDBusCountDownType: String, AppEnum {
     }
 }
 
+enum UDBusCountDownBusDirection: String, AppEnum {
+    case toPlant
+    case toStation
+    case autoTime
+    //case autoLocation
+    
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        "Bus Direction"
+    }
+    
+    static var caseDisplayRepresentations: [UDBusCountDownBusDirection : DisplayRepresentation] {
+        [
+            .toPlant: "towards UD Plan",
+            .toStation: "towards Ageo Station",
+            .autoTime: "Smart Change (time)"
+            //.autoLocation: "Smart Change (location)"
+        ]
+    }
+}
+
+enum UDBusCountDownTrainDirection: String, AppEnum {
+    case toOomiya
+    case toKagohara
+    
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        "Train Direction"
+    }
+    
+    static var caseDisplayRepresentations: [UDBusCountDownTrainDirection : DisplayRepresentation] {
+        [
+            .toOomiya: "towards Oomiya",
+            .toKagohara: "towards Kagohara",
+        ]
+    }
+}
+
 struct UDBusCountDownIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "UDBus CountDown Settings"
     static var description: LocalizedStringResource = "Choose next bus or next train countdown"
@@ -33,14 +69,62 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
     @Parameter(title: "Countdown for ", default: .bus)
     var countDownType: UDBusCountDownType
     
+    @Parameter(title: "Bus Direction", default: .autoTime)
+    var BusDirection: UDBusCountDownBusDirection?
+    
+    @Parameter(title: "Train Direction", default: .toOomiya)
+    var TrainDirection: UDBusCountDownTrainDirection?
+    
     @Parameter(title: "AvoidShonanShinjuku", default: false)
-    var AvoidShonanShinjuku: Bool
+    var AvoidShonanShinjuku: Bool?
     
     init(){}
     
-    init(countDownType: UDBusCountDownType, AvoidShonanShinjuku: Bool) {
+    init(countDownType: UDBusCountDownType, BusDirection:UDBusCountDownBusDirection, TrainDirection: UDBusCountDownTrainDirection, AvoidShonanShinjuku: Bool) {
         self.countDownType = countDownType
         self.AvoidShonanShinjuku = AvoidShonanShinjuku
+        self.BusDirection = BusDirection
+        self.TrainDirection = TrainDirection
+    }
+    
+    static var parameterSummary: some ParameterSummary {
+        Switch(\.$countDownType){
+            Case(.bus){
+                Summary{
+                    \.$countDownType
+                    \.$BusDirection
+                }
+            }
+            Case(.train)
+            {
+                Switch(\.$TrainDirection){
+                    Case(.toOomiya) {
+                        Summary {
+                            \.$countDownType
+                            \.$TrainDirection
+                            \.$AvoidShonanShinjuku
+                        }
+                    }
+                    Case(.toKagohara) {
+                        Summary{
+                            \.$countDownType
+                            \.$TrainDirection
+                        }
+                    }
+                    DefaultCase{
+                        Summary {
+                            \.$countDownType
+                            \.$TrainDirection
+                        }
+                    }
+                }
+            }
+            DefaultCase {
+                Summary {
+                    \.$countDownType
+                }
+            }
+        }
     }
 
     func perform () async throws -> some IntentResult {

@@ -11,4 +11,6 @@ struct UDBusCountDownEntry: TimelineEntry {
     let date: Date
     let targetDate: Date
     let type: UDBusCountDownType
+    let busDirection: UDBusCountDownBusDirection
+    let trainDirection: UDBusCountDownTrainDirection
 }

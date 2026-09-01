@@ -15,12 +15,24 @@ struct UDBusCountDownView : View {
     var body: some View {
         Gauge(value:1) {
             if entry.type == .bus {
-                Text("Bus")
-                    .bold()
+                if entry.busDirection == .toPlant {
+                    Text("S\u{2192}P")
+                        .bold()
+                }
+                else {
+                    Text("S\u{2190}P")
+                        .bold()
+                }
             }
             else {
-                Text("Train")
-                    .bold()
+                if entry.trainDirection == .toOomiya {
+                    Text("\u{2192}Oo")
+                        .bold()
+                }
+                else {
+                    Text("\u{2192}Ka")
+                        .bold()
+                }
             }
         } currentValueLabel: {
             Text(entry.targetDate, style:.timer)
