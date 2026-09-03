@@ -36,11 +36,11 @@ struct UDBusCountDownProvider: AppIntentTimelineProvider {
     func getBusOrTrainDatePerHour(iHour:Int, CountDownType: UDBusCountDownType, iAvoidShonanShinjuku: Bool, iBusDirection: UDBusCountDownBusDirection, iTrainDirection: UDBusCountDownTrainDirection, iAddOneExtra:Bool)->[UDBusCountDownEntry] {
         var listDates: [UDBusCountDownEntry]=[]
         var listTimes: [CountDownDataRaw]=[]
-        if(CountDownType==UDBusCountDownType.bus) {
+        if(CountDownType == .bus) {
             listTimes = getBusTimePerHour(iHour: iHour, isBusToPlant:iBusDirection == .toPlant, iAddOneExtra: iAddOneExtra)
         }
         else {
-            listTimes = getTrainTimePerHour(iHour: iHour, iAvoidShonanShinjuku: iAvoidShonanShinjuku, iAddOneExtra: iAddOneExtra)
+            listTimes = getTrainTimePerHour(iHour: iHour, iToOomiya: iTrainDirection == .toOomiya, iAvoidShonanShinjuku: iAvoidShonanShinjuku, iAddOneExtra: iAddOneExtra)
         }
         
         for item in listTimes {

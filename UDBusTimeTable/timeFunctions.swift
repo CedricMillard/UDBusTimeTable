@@ -71,7 +71,7 @@ func getBusFromIndex(iIndex: Int, isBusToPlant:Bool = false)->BusData {
     return bus
 }
 
-// Return the index of the best bus
+// Return the index of the best bus towards Ageo station
 func getNextBusToAgeo(iTime: Int, BusTimeBuffer:Int)->Int {
     var result = -1
     for i in 0..<UDtoAgeo.count {
@@ -95,6 +95,7 @@ func getNextBusToPlant(iTime: Int)->Int {
     return result
 }
 
+//Used only for Samples, so no support for avoiding Shonan Shinjuku line or for train direction
 func getNext3BusToAgeo(iTime: Int, BusTimeBuffer: Int)->[BusData] {
     let curBusIndex = getNextBusToAgeo(iTime: iTime, BusTimeBuffer: BusTimeBuffer)
     var curBusTime = BusData(departureTime:-1,duration:-1)
@@ -119,31 +120,35 @@ func getNext3BusToAgeo(iTime: Int, BusTimeBuffer: Int)->[BusData] {
     return [prevBusTime, curBusTime, nextBusTime]
 }
 
-func getTrainsFromBuses(iBuses: [BusData], TrainTimeBuffer:Int, AvoidShonanShinjuku: Bool)->[[TrainData]] {
+func getTrainsFromBuses(iBuses: [BusData], TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku: Bool)->[[TrainData]] {
     var trains:[[TrainData]] = []
-
+    
     for bus in iBuses {
-            trains.append(getNextTrainFromAgeoBus(iBus: bus, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku))
+        trains.append(getNextTrainFromBus(iBus: bus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya:iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku))
     }
 
     return trains
 }
 
-func getNextTrainFromAgeoBus(iBus: BusData, TrainTimeBuffer:Int, AvoidShonanShinjuku:Bool)->[TrainData] {
+func getNextTrainFromBus(iBus: BusData, TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku:Bool)->[TrainData] {
 
     var trains:[TrainData] = []
     var busDuration = stdBusDuration
+    var trainTable = TrainToOomiya
+    if !iToOomiya {
+        trainTable = TrainToKagohara
+    }
 
     if(iBus.departureTime < 0) {
         trains.append(TrainData(departureTime: -1, isShonan: false))
     }
     else
     {    
-        for i in 0..<TrainFromAgeo.count {
+        for i in 0..<trainTable.count {
             //First try with standard bus duration
-            let deltaT = TrainFromAgeo[i].departureTime - (iBus.departureTime + busDuration + TrainTimeBuffer)
-            if deltaT >= 0 && !(AvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
-                trains.append(TrainFromAgeo[i])
+            let deltaT = trainTable[i].departureTime - (iBus.departureTime + busDuration + TrainTimeBuffer)
+            if deltaT >= 0 && !(AvoidShonanShinjuku && trainTable[i].isShonan) {
+                trains.append(trainTable[i])
                 //This trains also works with real bus duration
                 if deltaT >= iBus.duration - stdBusDuration {
                     break
@@ -165,7 +170,7 @@ func getNextTrainFromAgeoBus(iBus: BusData, TrainTimeBuffer:Int, AvoidShonanShin
 
 //Return the data needed for the widget for a full hour
 // iHour = hour (eg 18 for 18Hxx) 
-func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, AvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[BusTrainTimeTable] {
+func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[BusTrainTimeTable] {
     var listTimeTables: [BusTrainTimeTable]=[]
     //If hour is before the first bus
     if iHour < Int(UDtoAgeo[0].departureTime/60) {
@@ -174,7 +179,7 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, Avoi
                                                 nextBus: UDtoAgeo[0],
                                                 prevTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
-                                                nextTrain: getNextTrainFromAgeoBus(iBus: UDtoAgeo[0],TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku)
+                                                nextTrain: getNextTrainFromBus(iBus: UDtoAgeo[0],TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya ,AvoidShonanShinjuku: AvoidShonanShinjuku)
                                                 ))
         return listTimeTables
     }
@@ -184,7 +189,7 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, Avoi
         listTimeTables.append(BusTrainTimeTable(prevBus: UDtoAgeo[UDtoAgeo.count-1], 
                                                 curBus: BusData(departureTime: -1, duration: -1),
                                                 nextBus: BusData(departureTime: -1, duration: -1),
-                                                prevTrain: getNextTrainFromAgeoBus(iBus: UDtoAgeo[UDtoAgeo.count-1],TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku),
+                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1],TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku),
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
         
@@ -206,9 +211,9 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, Avoi
             let prevBus = getBusFromIndex(iIndex: i-1)
             let nextBus = getBusFromIndex(iIndex: i+1)
 
-            let curTrain = getNextTrainFromAgeoBus(iBus: curBus, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku)
-            let prevTrain = getNextTrainFromAgeoBus(iBus: prevBus, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku)
-            let nextTrain = getNextTrainFromAgeoBus(iBus: nextBus, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let curTrain = getNextTrainFromBus(iBus: curBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let prevTrain = getNextTrainFromBus(iBus: prevBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let nextTrain = getNextTrainFromBus(iBus: nextBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
 
             listTimeTables.append(BusTrainTimeTable(prevBus: prevBus,
                                                     curBus: curBus,
@@ -223,7 +228,7 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, Avoi
         listTimeTables.append(BusTrainTimeTable(prevBus: UDtoAgeo[UDtoAgeo.count-1],
                                                 curBus: BusData(departureTime: -1, duration: -1),
                                                 nextBus: BusData(departureTime: -1, duration: -1),
-                                                prevTrain: getNextTrainFromAgeoBus(iBus: UDtoAgeo[UDtoAgeo.count-1], TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku),
+                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1], TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku),
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
     }
@@ -332,18 +337,22 @@ func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false)->[BusData] {
 //Return the list of train departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next train from next hour for the widget
-func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[CountDownDataRaw] {
+func getTrainTimePerHour(iHour:Int, iToOomiya:Bool, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[CountDownDataRaw] {
     var listTimes: [CountDownDataRaw]=[]
+    var trainTable = TrainToOomiya
+    if !iToOomiya {
+        trainTable = TrainToKagohara
+    }
     //If hour is before the first train or after the last train
-    if iHour < Int(TrainFromAgeo[0].departureTime/60) || iHour > Int(TrainFromAgeo[TrainFromAgeo.count-1].departureTime/60){
+    if iHour < Int(trainTable[0].departureTime/60) || iHour > Int(trainTable[trainTable.count-1].departureTime/60){
         if iAddOneExtra {
             var offset = 0
-            if iHour > Int(TrainFromAgeo[TrainFromAgeo.count-1].departureTime/60) {
+            if iHour > Int(trainTable[trainTable.count-1].departureTime/60) {
                 offset = 24
             }
-            for i in 0..<TrainFromAgeo.count {
-                if !(iAvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
-                    listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i].departureTime + offset * 60, updateTime: i>0 ? TrainFromAgeo[i-1].departureTime : iHour*60))
+            for i in 0..<trainTable.count {
+                if !(iAvoidShonanShinjuku && trainTable[i].isShonan) {
+                    listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime + offset * 60, updateTime: i>0 ? trainTable[i-1].departureTime : iHour*60))
                 }
                 if listTimes.count>0 {
                     break
@@ -356,16 +365,16 @@ func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool
     var prevAdded = false
     
     //Go through the timetable to find suitable train
-    for i in 0..<TrainFromAgeo.count {
+    for i in 0..<trainTable.count {
         //If not adding extra, stop when current train time is above hour
         //If add extra, continue until previous train time display is on next hour
-        if TrainFromAgeo[i].departureTime>=(iHour+1)*60 {
+        if trainTable[i].departureTime>=(iHour+1)*60 {
             if iAddOneExtra {
                 var found:Bool = false
                 var j:Int = i
-                while !found && j<TrainFromAgeo.count {
-                    if !(iAvoidShonanShinjuku && TrainFromAgeo[j].isShonan) {
-                        listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[j].departureTime, updateTime: j>0 ? TrainFromAgeo[j-1].departureTime : Int(TrainFromAgeo[j].departureTime/60)*60))
+                while !found && j<trainTable.count {
+                    if !(iAvoidShonanShinjuku && trainTable[j].isShonan) {
+                        listTimes.append(CountDownDataRaw(departureTime: trainTable[j].departureTime, updateTime: j>0 ? trainTable[j-1].departureTime : Int(trainTable[j].departureTime/60)*60))
                         found = true
                     }
                     j+=1
@@ -374,14 +383,14 @@ func getTrainTimePerHour(iHour:Int, iAvoidShonanShinjuku:Bool, iAddOneExtra:Bool
             break
         }
             
-        if TrainFromAgeo[i].departureTime>=iHour*60 && !(iAvoidShonanShinjuku && TrainFromAgeo[i].isShonan) {
+        if trainTable[i].departureTime>=iHour*60 && !(iAvoidShonanShinjuku && trainTable[i].isShonan) {
             
             if iAddOneExtra && !prevAdded && i>0 {
-                listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i-1].departureTime, updateTime: i-1>0 ? TrainFromAgeo[i-2].departureTime : Int(TrainFromAgeo[i-1].departureTime/60)*60))
+                listTimes.append(CountDownDataRaw(departureTime: trainTable[i-1].departureTime, updateTime: i-1>0 ? trainTable[i-2].departureTime : Int(trainTable[i-1].departureTime/60)*60))
                 prevAdded = true
             }
             
-            listTimes.append(CountDownDataRaw(departureTime: TrainFromAgeo[i].departureTime, updateTime: i>0 ? TrainFromAgeo[i-1].departureTime : Int(TrainFromAgeo[i].departureTime/60)*60))
+            listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime, updateTime: i>0 ? trainTable[i-1].departureTime : Int(trainTable[i].departureTime/60)*60))
         }
     }
     return listTimes

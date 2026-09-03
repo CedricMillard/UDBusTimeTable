@@ -25,9 +25,11 @@ struct BusToStationView: View {
     @Binding var isFlipped: Bool
     
     @State private var currentIndex: Int = Calendar.current.component(.hour, from: today)+1
-    @State private var strDirection="UD Plant -> Ageo Station"
     @State private var showSettings = false
     @State private var currentTime: Int = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
+    
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
+    @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
     
     var body: some View {
         
@@ -59,7 +61,7 @@ struct BusToStationView: View {
                     isFlipped.toggle()
                 }
             }){
-                Text(strDirection)
+                Text(TrainDirection == "toward Oomiya" ? "UD Plant -> Ageo Station -> Oomiya" : "UD Plant -> Ageo Station -> Kagohara" )
                     .italic()
                     .font(.footnote)
             }
@@ -123,22 +125,22 @@ struct BusToStationView: View {
             Spacer(minLength: 25)
             HStack{
                 
-                Text("Ueno-Tokyo line ")
+                Text(TrainDirection == "toward Oomiya" ? "Ueno-Tokyo line" : "Local train")
                     .foregroundColor(getTrainFontColor(iIsShonan: false))
                     .font(.footnote)
                     .italic()
                 Text("/")
                     .font(.footnote)
                     .italic()
-                Text("Shonan-Shinjuku line")
+                Text(TrainDirection == "toward Oomiya" ? "Shonan-Shinjuku line" : "Rapid Train")
                     .foregroundColor(getTrainFontColor(iIsShonan: true))
                     .font(.footnote)
                     .italic()
-                Text("toward Oomiya")
+                Text(TrainDirection == "toward Oomiya" ? "toward Oomiya" : "toward Kagohara")
                     .font(.footnote)
                     .italic()
             }
-            Text("Bus does not operate on red days")
+            Text("Bus not in service on public holidays")
                 .foregroundColor(getBusFontColor(iIsOperateRedDays: false))
                 .font(.footnote)
                 .italic()
@@ -174,11 +176,13 @@ struct HourlyContentView: View {
     
     @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
     
     var body: some View {
+        let toOomiya = (TrainDirection == "toward Oomiya")
         
-        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
+        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: toOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
         let nextBusIndex = getNextBusToAgeo(iTime: currentTime, BusTimeBuffer: BusTimeBuffer)
         let nextBus = getBusFromIndex(iIndex: nextBusIndex)
         
@@ -235,7 +239,9 @@ struct SettingsView: View {
     
     @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
+    let directions = ["toward Oomiya", "toward Kagohara"]
     
     var body: some View {
             
@@ -254,7 +260,7 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.wheel)
                     .labelsHidden()
-                    .frame(width:50, height:100)
+                    .frame(width:100, height:100)
                     .onChange(of: BusTimeBuffer) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
@@ -275,15 +281,34 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.wheel)
                     .labelsHidden()
-                    .frame(width:50, height:100)
+                    .frame(width:100, height:100)
                     .onChange(of: TrainTimeBuffer) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
                     }
                     Spacer()
                 }
-                Toggle("Avoid Shonan Shinjuku line",isOn:$AvoidShonanShinjuku)
-                    .frame(width:200)
+                HStack{
+                    Spacer()
+                    Text("Train Direction: ")
+                        .frame(width:150)
+
+                    Picker("TrainDirection", selection: $TrainDirection){
+                        ForEach(directions,id:\.self){dir in
+                            Text(dir)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .labelsHidden()
+                    .frame(width:150)
+                    .onChange(of: TrainDirection) { oldvalue, newvalue in
+                        currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
+                        //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
+                    }
+                    Spacer()
+                }
+                Toggle("Avoid ShonanShinjuku or Rapid",isOn:$AvoidShonanShinjuku)
+                    .frame(width:250)
                     .onChange(of: AvoidShonanShinjuku) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadAllTimelines()

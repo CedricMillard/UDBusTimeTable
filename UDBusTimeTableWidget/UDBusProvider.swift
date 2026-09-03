@@ -10,7 +10,7 @@ import WidgetKit
 func getSampleTimeTable() -> UDBusEntry
 {
     let nextBus : [BusData] =  getNext3BusToAgeo(iTime: 17*60+55, BusTimeBuffer: 3)
-    let nextTrains:[[TrainData]] = getTrainsFromBuses(iBuses: nextBus, TrainTimeBuffer: 3, AvoidShonanShinjuku: false)
+    let nextTrains:[[TrainData]] = getTrainsFromBuses(iBuses: nextBus, TrainTimeBuffer: 3, iToOomiya: true, AvoidShonanShinjuku: false)
     let timeTable = BusTrainTimeTable(prevBus: nextBus[0], curBus: nextBus[1], nextBus: nextBus[2], prevTrain: nextTrains[0], curTrain: nextTrains[1], nextTrain: nextTrains[2])
     let UDBusSampleEntry = UDBusEntry(date: Date(), timeTable: timeTable)
     return UDBusSampleEntry
@@ -90,8 +90,9 @@ struct UDBusProvider: AppIntentTimelineProvider {
         let TrainTimeBuffer = configuration.TrainTimeBuffer
         let BusTimeBuffer = configuration.BusTimeBuffer
         let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku
+        let TrainDirection = configuration.TrainDirection
         
-        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
+        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: TrainDirection == .toOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
         for item in lHourlyTables {
             var refreshDate = roundedDate
             if item.prevBus.departureTime>0 {

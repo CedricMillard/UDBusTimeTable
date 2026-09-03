@@ -115,7 +115,7 @@ let AgeotoUD = [
                 BusData(departureTime:17*60+00,duration:10)
                 ]
 
-let TrainFromAgeo = [
+let TrainToOomiya = [
                      TrainData(departureTime:08*60+55,isShonan:false),
                      
                      TrainData(departureTime:09*60+08,isShonan:false),
@@ -214,3 +214,118 @@ let TrainFromAgeo = [
                      TrainData(departureTime:23*60+40,isShonan:false)
                      ]
 
+//use isShonan for Rapid train towards Takasaki
+let TrainToKagohara = [
+                     TrainData(departureTime:08*60+53,isShonan:false),
+                     
+                     TrainData(departureTime:09*60+08,isShonan:true),
+                     TrainData(departureTime:09*60+11,isShonan:false),
+                     TrainData(departureTime:09*60+21,isShonan:false),
+                     TrainData(departureTime:09*60+26,isShonan:false),
+                     TrainData(departureTime:09*60+36,isShonan:false),
+                     TrainData(departureTime:09*60+50,isShonan:false),
+                     
+                     TrainData(departureTime:10*60+00,isShonan:true),
+                     TrainData(departureTime:10*60+06,isShonan:false),
+                     TrainData(departureTime:10*60+19,isShonan:false),
+                     TrainData(departureTime:10*60+36,isShonan:false),
+                     TrainData(departureTime:10*60+53,isShonan:true),
+                     TrainData(departureTime:10*60+55,isShonan:false),
+                     
+                     TrainData(departureTime:11*60+06,isShonan:false),
+                     TrainData(departureTime:11*60+21,isShonan:false),
+                     TrainData(departureTime:11*60+29,isShonan:false),
+                     TrainData(departureTime:11*60+45,isShonan:false),
+                     TrainData(departureTime:11*60+59,isShonan:true),
+                     
+                     TrainData(departureTime:12*60+05,isShonan:false),
+                     TrainData(departureTime:12*60+21,isShonan:false),
+                     TrainData(departureTime:12*60+29,isShonan:false),
+                     TrainData(departureTime:12*60+47,isShonan:false),
+                     TrainData(departureTime:12*60+58,isShonan:true),
+                     
+                     TrainData(departureTime:13*60+05,isShonan:false),
+                     TrainData(departureTime:13*60+21,isShonan:false),
+                     TrainData(departureTime:13*60+28,isShonan:false),
+                     TrainData(departureTime:13*60+43,isShonan:false),
+                     TrainData(departureTime:13*60+58,isShonan:true),
+                     
+                     TrainData(departureTime:14*60+05,isShonan:false),
+                     TrainData(departureTime:14*60+21,isShonan:false),
+                     TrainData(departureTime:14*60+29,isShonan:false),
+                     TrainData(departureTime:14*60+43,isShonan:false),
+                     TrainData(departureTime:14*60+58,isShonan:true),
+                     
+                     TrainData(departureTime:15*60+06,isShonan:false),
+                     TrainData(departureTime:15*60+21,isShonan:false),
+                     TrainData(departureTime:15*60+29,isShonan:false),
+                     TrainData(departureTime:15*60+43,isShonan:false),
+                     TrainData(departureTime:15*60+58,isShonan:true),
+                     
+                     TrainData(departureTime:16*60+05,isShonan:false),
+                     TrainData(departureTime:16*60+19,isShonan:false),
+                     TrainData(departureTime:16*60+29,isShonan:false),
+                     TrainData(departureTime:16*60+43,isShonan:false),
+                     TrainData(departureTime:16*60+58,isShonan:true),
+                     
+                     TrainData(departureTime:17*60+02,isShonan:false),
+                     TrainData(departureTime:17*60+07,isShonan:false),
+                     TrainData(departureTime:17*60+20,isShonan:false),
+                     TrainData(departureTime:17*60+30,isShonan:false),
+                     TrainData(departureTime:17*60+41,isShonan:false),
+                     TrainData(departureTime:17*60+51,isShonan:false),
+                     
+                     TrainData(departureTime:18*60+05,isShonan:true),
+                     TrainData(departureTime:18*60+07,isShonan:false),
+                     TrainData(departureTime:18*60+11,isShonan:false),
+                     TrainData(departureTime:18*60+21,isShonan:false),
+                     TrainData(departureTime:18*60+32,isShonan:false),
+                     TrainData(departureTime:18*60+41,isShonan:false),
+                     TrainData(departureTime:18*60+48,isShonan:false),
+                     TrainData(departureTime:18*60+59,isShonan:false),
+                     
+                     TrainData(departureTime:19*60+04,isShonan:true),
+                     TrainData(departureTime:19*60+08,isShonan:false),
+                     TrainData(departureTime:19*60+18,isShonan:true),
+                     TrainData(departureTime:19*60+20,isShonan:false),
+                     TrainData(departureTime:19*60+34,isShonan:false),
+                     TrainData(departureTime:19*60+38,isShonan:false),
+                     TrainData(departureTime:19*60+47,isShonan:false),
+                     TrainData(departureTime:19*60+52,isShonan:false),
+                     TrainData(departureTime:19*60+58,isShonan:false),
+                     
+                     TrainData(departureTime:20*60+03,isShonan:true),
+                     TrainData(departureTime:20*60+08,isShonan:false),
+                     TrainData(departureTime:20*60+16,isShonan:true),
+                     TrainData(departureTime:20*60+18,isShonan:false),
+                     TrainData(departureTime:20*60+24,isShonan:false),
+                     TrainData(departureTime:20*60+33,isShonan:true),
+                     TrainData(departureTime:20*60+37,isShonan:false),
+                     TrainData(departureTime:20*60+41,isShonan:false),
+                     TrainData(departureTime:20*60+51,isShonan:false),
+                     TrainData(departureTime:20*60+59,isShonan:false),
+                     
+                     TrainData(departureTime:21*60+04,isShonan:false),
+                     TrainData(departureTime:21*60+09,isShonan:false),
+                     TrainData(departureTime:21*60+20,isShonan:false),
+                     TrainData(departureTime:21*60+35,isShonan:false),
+                     TrainData(departureTime:21*60+39,isShonan:false),
+                     TrainData(departureTime:21*60+45,isShonan:false),
+                     TrainData(departureTime:21*60+52,isShonan:false),
+                     
+                     TrainData(departureTime:22*60+01,isShonan:false),
+                     TrainData(departureTime:22*60+20,isShonan:false),
+                     TrainData(departureTime:22*60+26,isShonan:false),
+                     TrainData(departureTime:22*60+39,isShonan:false),
+                     TrainData(departureTime:22*60+43,isShonan:false),
+                     TrainData(departureTime:22*60+53,isShonan:false),
+                     
+                     TrainData(departureTime:23*60+10,isShonan:false),
+                     TrainData(departureTime:23*60+15,isShonan:false),
+                     TrainData(departureTime:23*60+29,isShonan:false),
+                     TrainData(departureTime:23*60+43,isShonan:false),
+                     TrainData(departureTime:23*60+59,isShonan:false),
+                     
+                     TrainData(departureTime:24*60+16,isShonan:false),
+                     TrainData(departureTime:24*60+23,isShonan:false)
+                     ]

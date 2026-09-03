@@ -17,14 +17,18 @@ struct UDBusIntent: WidgetConfigurationIntent {
     @Parameter(title: "TrainTimeBuffer", default: 3)
     var TrainTimeBuffer: Int
     
-    @Parameter(title: "AvoidShonanShinjuku", default: false)
+    @Parameter(title: "Train Direction", default: .toOomiya)
+    var TrainDirection: UDBusCountDownTrainDirection
+    
+    @Parameter(title: "Avoid ShonanShinjuku or Rapid train", default: false)
     var AvoidShonanShinjuku: Bool
     
     init(){}
     
-    init(BusTimeBuffer: Int, TrainTimeBuffer: Int, AvoidShonanShinjuku: Bool) {
+    init(BusTimeBuffer: Int, TrainTimeBuffer: Int, TrainDirection:UDBusCountDownTrainDirection, AvoidShonanShinjuku: Bool) {
         self.BusTimeBuffer = BusTimeBuffer
         self.TrainTimeBuffer = TrainTimeBuffer
+        self.TrainDirection = TrainDirection
         self.AvoidShonanShinjuku = AvoidShonanShinjuku
     }
 

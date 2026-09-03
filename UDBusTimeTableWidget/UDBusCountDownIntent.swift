@@ -75,7 +75,7 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
     @Parameter(title: "Train Direction", default: .toOomiya)
     var TrainDirection: UDBusCountDownTrainDirection?
     
-    @Parameter(title: "AvoidShonanShinjuku", default: false)
+    @Parameter(title: "Avoid ShonanShinjuku or Rapid", default: false)
     var AvoidShonanShinjuku: Bool?
     
     init(){}
@@ -97,13 +97,13 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
             }
             Case(.train)
             {
-                Switch(\.$TrainDirection){
-                    Case(.toOomiya) {
+                /*Switch(\.$TrainDirection){
+                    Case(.toOomiya) {*/
                         Summary {
                             \.$countDownType
                             \.$TrainDirection
                             \.$AvoidShonanShinjuku
-                        }
+                        }/*
                     }
                     Case(.toKagohara) {
                         Summary{
@@ -117,7 +117,7 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
                             \.$TrainDirection
                         }
                     }
-                }
+                }*/
             }
             DefaultCase {
                 Summary {
