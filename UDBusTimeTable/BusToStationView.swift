@@ -28,14 +28,14 @@ struct BusToStationView: View {
     @State private var showSettings = false
     @State private var currentTime: Int = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
     
-    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
     
     var body: some View {
         
         VStack {
             ZStack{
-                Text("UD Bus-Train timetable")
+                Text("UD Bus & Train timetable")
                     .bold()
                 HStack{
                     Spacer()
@@ -61,9 +61,15 @@ struct BusToStationView: View {
                     isFlipped.toggle()
                 }
             }){
-                Text(TrainDirection == "toward Oomiya" ? "UD Plant -> Ageo Station -> Oomiya" : "UD Plant -> Ageo Station -> Kagohara" )
-                    .italic()
-                    .font(.footnote)
+                HStack {
+                    Text("UD Plant \u{2192} Ageo Station")
+                        .font(.callout)
+                    if TrainDirection != "No Train" {
+                        Text(TrainDirection == "Oomiya" ? "\u{2192} Oomiya" : "\u{2192} Kagohara" )
+                            .italic()
+                            .font(.callout)
+                    }
+                }
             }
 
             Spacer(minLength: 25)
@@ -123,22 +129,23 @@ struct BusToStationView: View {
             }
             
             Spacer(minLength: 25)
-            HStack{
-                
-                Text(TrainDirection == "toward Oomiya" ? "Ueno-Tokyo line" : "Local train")
-                    .foregroundColor(getTrainFontColor(iIsShonan: false))
-                    .font(.footnote)
-                    .italic()
-                Text("/")
-                    .font(.footnote)
-                    .italic()
-                Text(TrainDirection == "toward Oomiya" ? "Shonan-Shinjuku line" : "Rapid Train")
-                    .foregroundColor(getTrainFontColor(iIsShonan: true))
-                    .font(.footnote)
-                    .italic()
-                Text(TrainDirection == "toward Oomiya" ? "toward Oomiya" : "toward Kagohara")
-                    .font(.footnote)
-                    .italic()
+            if TrainDirection != "No Train" {
+                HStack{
+                    Text(TrainDirection == "Oomiya" ? "Ueno-Tokyo line" : "Local train")
+                        .foregroundColor(getTrainFontColor(iIsShonan: false))
+                        .font(.footnote)
+                        .italic()
+                    Text("/")
+                        .font(.footnote)
+                        .italic()
+                    Text(TrainDirection == "Oomiya" ? "Shonan-Shinjuku line" : "Rapid Train")
+                        .foregroundColor(getTrainFontColor(iIsShonan: true))
+                        .font(.footnote)
+                        .italic()
+                    /*Text(TrainDirection == "Oomiya" ? "toward Oomiya" : "toward Kagohara")
+                     .font(.footnote)
+                     .italic()*/
+                }
             }
             Text("Bus not in service on public holidays")
                 .foregroundColor(getBusFontColor(iIsOperateRedDays: false))
@@ -176,11 +183,11 @@ struct HourlyContentView: View {
     
     @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
-    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
     
     var body: some View {
-        let toOomiya = (TrainDirection == "toward Oomiya")
+        let toOomiya = (TrainDirection == "Oomiya")
         
         let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: toOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
         let nextBusIndex = getNextBusToAgeo(iTime: currentTime, BusTimeBuffer: BusTimeBuffer)
@@ -193,9 +200,11 @@ struct HourlyContentView: View {
                     Text("Bus")
                         .bold()
                         .frame(width:100)
-                    Text("Train")
-                        .bold()
-                        .frame(width:100)
+                    if(TrainDirection != "No Train") {
+                        Text("Train")
+                            .bold()
+                            .frame(width:100)
+                    }
                 }
                 Divider()
                 ForEach(lHourlyTables) { item in
@@ -204,22 +213,23 @@ struct HourlyContentView: View {
                         Text(timeToString(iTime: item.curBus.departureTime))
                             .foregroundColor(getBusFontColor(iIsOperateRedDays: item.curBus.isActiveRedDays))
                             .frame(width:100)
-                            
-                        if (item.curTrain.count==1){
-                            Text(timeToString(iTime: item.curTrain[0].departureTime))
-                            .foregroundColor(getTrainFontColor(iIsShonan: item.curTrain[0].isShonan))
-                            .frame(width:100)
-                        }
-                        else {
-                            VStack{
-                                Text(timeToString(iTime: item.curTrain[1].departureTime))
-                                    .foregroundColor(getTrainFontColor(iIsShonan: item.curTrain[1].isShonan))
-                            
-                                Text("("+timeToString(iTime: item.curTrain[0].departureTime)+")")
-                                    .font(.footnote)
+                        if(TrainDirection != "No Train") {
+                            if (item.curTrain.count==1){
+                                Text(timeToString(iTime: item.curTrain[0].departureTime))
                                     .foregroundColor(getTrainFontColor(iIsShonan: item.curTrain[0].isShonan))
+                                    .frame(width:100)
                             }
-                            .frame(width:100)
+                            else {
+                                VStack{
+                                    Text(timeToString(iTime: item.curTrain[1].departureTime))
+                                        .foregroundColor(getTrainFontColor(iIsShonan: item.curTrain[1].isShonan))
+                                    
+                                    Text("("+timeToString(iTime: item.curTrain[0].departureTime)+")")
+                                        .font(.footnote)
+                                        .foregroundColor(getTrainFontColor(iIsShonan: item.curTrain[0].isShonan))
+                                }
+                                .frame(width:100)
+                            }
                         }
                     }
                     .bold(item.curBus.departureTime == nextBus.departureTime)
@@ -239,9 +249,9 @@ struct SettingsView: View {
     
     @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
-    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "toward Oomiya"
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
-    let directions = ["toward Oomiya", "toward Kagohara"]
+    let directions = ["Oomiya", "Kagohara", "No Train"]
     
     var body: some View {
             
@@ -250,7 +260,7 @@ struct SettingsView: View {
                     .font(.title)
                 HStack{
                     Spacer()
-                    Text("BusTimeBuffer: ")
+                    Text("Bus Time Buffer: ")
                         .frame(width:150)
                     Picker("Buffer time to catch bus", selection: $BusTimeBuffer){
                         ForEach(0...15,id:\.self){number in
@@ -260,32 +270,12 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.wheel)
                     .labelsHidden()
-                    .frame(width:100, height:100)
+                    .frame(width:150, height:100)
                     .onChange(of: BusTimeBuffer) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
                     }
                     
-                    Spacer()
-                }
-                HStack{
-                    Spacer()
-                    Text("TrainTimeBuffer: ")
-                        .frame(width:150)
-
-                    Picker("Buffer time to catch train", selection: $TrainTimeBuffer){
-                        ForEach(0...15,id:\.self){number in
-                        Text("\(number)")
-                                .tag(number)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .labelsHidden()
-                    .frame(width:100, height:100)
-                    .onChange(of: TrainTimeBuffer) { oldvalue, newvalue in
-                        currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
-                        //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
-                    }
                     Spacer()
                 }
                 HStack{
@@ -307,8 +297,31 @@ struct SettingsView: View {
                     }
                     Spacer()
                 }
-                Toggle("Avoid ShonanShinjuku or Rapid",isOn:$AvoidShonanShinjuku)
-                    .frame(width:250)
+                HStack{
+                    Spacer()
+                    Text("Train Time Buffer: ")
+                        .frame(width:150)
+
+                    Picker("Buffer time to catch train", selection: $TrainTimeBuffer){
+                        ForEach(0...15,id:\.self){number in
+                        Text("\(number)")
+                                .tag(number)
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .labelsHidden()
+                    .frame(width:150, height:100)
+                    .onChange(of: TrainTimeBuffer) { oldvalue, newvalue in
+                        currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
+                        //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
+                    }
+                    Spacer()
+                }
+                .opacity(TrainDirection == "No Train" ? 0 : 1)
+                
+                Toggle("Avoid Shonan Shinjuku or Rapid",isOn:$AvoidShonanShinjuku)
+                    .frame(width:300)
+                    .opacity(TrainDirection == "No Train" ? 0 : 1)
                     .onChange(of: AvoidShonanShinjuku) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadAllTimelines()

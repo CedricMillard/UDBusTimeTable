@@ -13,7 +13,6 @@ struct BusToPlantView: View {
     @Binding var isFlipped: Bool
     
     @State private var currentIndex: Int = Calendar.current.component(.hour, from: today)+1
-    @State private var strDirection="Ageo Station -> UD Plant"
     @State private var currentTime: Int = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
     
     var body: some View {
@@ -28,9 +27,9 @@ struct BusToPlantView: View {
                     isFlipped.toggle()
                 }
             }){
-                Text(strDirection)
+                Text("Ageo Station \u{2192} UD Plant")
                     .italic()
-                    .font(.footnote)
+                    .font(.callout)
             }
             Spacer(minLength: 25)
             
@@ -89,7 +88,7 @@ struct BusToPlantView: View {
             }
             Spacer(minLength: 25)
             
-            Text("Bus does not operate on red days")
+            Text("Bus not in service on public holidays")
                 .foregroundColor(getBusFontColor(iIsOperateRedDays: false))
                 .font(.footnote)
                 .italic()
