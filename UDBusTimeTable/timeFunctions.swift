@@ -279,7 +279,7 @@ func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false, iAddOneExtra:Bool)->[
             if iAddOneExtra {
                 listTimes.append(CountDownDataRaw(departureTime: busList[i].departureTime, updateTime: i>0 ? busList[i-1].departureTime : Int(busList[i].departureTime/60)*60))
             }
-                break
+            break
         }
             
         if busList[i].departureTime>=iHour*60 {
@@ -300,7 +300,6 @@ func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false, iAddOneExtra:Bool)->[
 
     return listTimes
 }
-
 
 //Return the list of bus departure time for a given hour
 // iHour = hour (eg 18 for 18Hxx)
@@ -343,6 +342,7 @@ func getTrainTimePerHour(iHour:Int, iToOomiya:Bool, iAvoidShonanShinjuku:Bool, i
     if !iToOomiya {
         trainTable = TrainToKagohara
     }
+    
     //If hour is before the first train or after the last train
     if iHour < Int(trainTable[0].departureTime/60) || iHour > Int(trainTable[trainTable.count-1].departureTime/60){
         if iAddOneExtra {
@@ -352,9 +352,7 @@ func getTrainTimePerHour(iHour:Int, iToOomiya:Bool, iAvoidShonanShinjuku:Bool, i
             }
             for i in 0..<trainTable.count {
                 if !(iAvoidShonanShinjuku && trainTable[i].isShonan) {
-                    listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime + offset * 60, updateTime: i>0 ? trainTable[i-1].departureTime : iHour*60))
-                }
-                if listTimes.count>0 {
+                    listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime + offset * 60, updateTime: iHour*60))
                     break
                 }
             }
@@ -370,12 +368,11 @@ func getTrainTimePerHour(iHour:Int, iToOomiya:Bool, iAvoidShonanShinjuku:Bool, i
         //If add extra, continue until previous train time display is on next hour
         if trainTable[i].departureTime>=(iHour+1)*60 {
             if iAddOneExtra {
-                var found:Bool = false
                 var j:Int = i
-                while !found && j<trainTable.count {
+                while j<trainTable.count {
                     if !(iAvoidShonanShinjuku && trainTable[j].isShonan) {
                         listTimes.append(CountDownDataRaw(departureTime: trainTable[j].departureTime, updateTime: j>0 ? trainTable[j-1].departureTime : Int(trainTable[j].departureTime/60)*60))
-                        found = true
+                        break
                     }
                     j+=1
                 }
@@ -393,6 +390,17 @@ func getTrainTimePerHour(iHour:Int, iToOomiya:Bool, iAvoidShonanShinjuku:Bool, i
             listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime, updateTime: i>0 ? trainTable[i-1].departureTime : Int(trainTable[i].departureTime/60)*60))
         }
     }
+    
+    //If we are on the hour of the last bus, add tomorrow's first bus
+    if iHour == Int(trainTable[trainTable.count-1].departureTime/60) && iAddOneExtra {
+        for i in 0..<trainTable.count {
+            if !(iAvoidShonanShinjuku && trainTable[i].isShonan) {
+                listTimes.append(CountDownDataRaw(departureTime: trainTable[i].departureTime + 24 * 60, updateTime: listTimes.count>0 ? listTimes[listTimes.count-1].departureTime : iHour*60))
+                break
+            }
+        }
+    }
+    
     return listTimes
 }
 
