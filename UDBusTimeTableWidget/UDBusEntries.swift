@@ -10,4 +10,6 @@ import WidgetKit
 struct UDBusEntry: TimelineEntry {
     let date: Date
     let timeTable: BusTrainTimeTable
+    let busDirection: UDBusCountDownBusDirection
+    let trainDirection: UDBusCountDownTrainDirection
 }

@@ -61,11 +61,11 @@ struct BusToStationView: View {
                     isFlipped.toggle()
                 }
             }){
-                HStack {
+                HStack (spacing: 0) {
                     Text("UD Plant \u{2192} Ageo Station")
                         .font(.callout)
                     if TrainDirection != "No Train" {
-                        Text(TrainDirection == "Oomiya" ? "\u{2192} Oomiya" : "\u{2192} Kagohara" )
+                        Text(TrainDirection == "Oomiya" ? " \u{2192} Oomiya" : " \u{2192} Kagohara" )
                             .italic()
                             .font(.callout)
                     }
@@ -293,7 +293,7 @@ struct SettingsView: View {
                     .frame(width:150)
                     .onChange(of: TrainDirection) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
-                        //WidgetCenter.shared.reloadTimelines(ofKind: "UDBusTimeTableWidget")
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                     Spacer()
                 }

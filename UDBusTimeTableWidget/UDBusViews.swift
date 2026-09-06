@@ -13,10 +13,11 @@ struct UDBusWidgetView : View {
     
     @Environment(\.widgetFamily) var family
     
-   /* @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
+    /*@AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
-    */
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"*/
+    
     
     var body: some View {
         switch family {
@@ -60,9 +61,14 @@ struct UDBusWidgetView : View {
             
         case .systemSmall:
             VStack {
-                Text("UD Plant->Ageo")
-                    .font(.footnote)
-                    .foregroundColor(Color.gray)
+                HStack (spacing: 0) {
+                    Text("UD\u{2192}Ageo")
+                        .font(.footnote)
+                        .foregroundColor(Color.gray)
+                    Text(entry.trainDirection == .toOomiya ? "\u{2192}Oomiya" : entry.trainDirection == .toKagohara ? "\u{2192}Kagoha" : "")
+                        .font(.footnote)
+                        .foregroundColor(Color.gray)
+                }
                 Spacer()
                 Grid(verticalSpacing: 5){
                     GridRow {

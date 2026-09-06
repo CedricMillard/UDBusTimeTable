@@ -12,7 +12,7 @@ func getSampleTimeTable() -> UDBusEntry
     let nextBus : [BusData] =  getNext3BusToAgeo(iTime: 17*60+55, BusTimeBuffer: 3)
     let nextTrains:[[TrainData]] = getTrainsFromBuses(iBuses: nextBus, TrainTimeBuffer: 3, iToOomiya: true, AvoidShonanShinjuku: false)
     let timeTable = BusTrainTimeTable(prevBus: nextBus[0], curBus: nextBus[1], nextBus: nextBus[2], prevTrain: nextTrains[0], curTrain: nextTrains[1], nextTrain: nextTrains[2])
-    let UDBusSampleEntry = UDBusEntry(date: Date(), timeTable: timeTable)
+    let UDBusSampleEntry = UDBusEntry(date: Date(), timeTable: timeTable, busDirection: .toStation, trainDirection: .toOomiya)
     return UDBusSampleEntry
 }
 
@@ -80,6 +80,9 @@ struct UDBusProvider: AppIntentTimelineProvider {
     
     func timeline(for configuration:UDBusIntent, in context: Context) async -> Timeline<Entry> {
         
+        let customDefaults = UserDefaults(suiteName: appGroupSuite) ?? .standard
+        let TrainDirectionOri = (customDefaults.object(forKey: "TrainDirection") != nil) ? customDefaults.string(forKey: "TrainDirection") : "Oomiya"
+        
         var entries: [UDBusEntry] = []
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
@@ -102,7 +105,8 @@ struct UDBusProvider: AppIntentTimelineProvider {
                 refreshDate = Calendar.current.date(byAdding: .minute, value: 1-BusTimeBuffer, to: busDate) ?? currentDate
             }
             
-            let entry = UDBusEntry(date: refreshDate, timeTable: item)
+            let entry = UDBusEntry(date: refreshDate, timeTable: item, busDirection: .toStation, trainDirection: TrainDirection)
+            
             entries.append(entry)
         }
         let timelineUpdateDate = Calendar.current.date(byAdding: .hour, value: 1, to: roundedDate) ?? currentDate

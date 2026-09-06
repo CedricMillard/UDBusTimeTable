@@ -15,7 +15,7 @@ struct UDBusCountDownView : View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.primary.opacity(0.1), lineWidth: 6)
+                .stroke(Color.primary.opacity(0.3), lineWidth: 6)
                 .padding(3)
             
             VStack (alignment: .center) {

@@ -28,7 +28,7 @@ struct UDBusTimeTableWidget: Widget {
             }
         }
         .configurationDisplayName("UD Bus Train Timetable Widget")
-        .description("Widget showing the next bus and connecting train from UD Ageo Plant towards Oomiya")
+        .description("Widget showing the next bus from UD Ageo Plant and connecting train towards Oomiya or Kagohara")
         .supportedFamilies([.systemSmall, .accessoryRectangular])
     }
 }
