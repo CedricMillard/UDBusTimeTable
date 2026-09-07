@@ -8,19 +8,19 @@
 import AppIntents
 
 struct UDBusIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "UDBus Widget Settings"
+    static var title: LocalizedStringResource = "UD Bus Widget Settings"
     static var description: LocalizedStringResource = "Configure buffer time for bus and train"
     
-    @Parameter(title: "BusTimeBuffer", default: 5)
+    @Parameter(title: "Bus Time Buffer", default: 5)
     var BusTimeBuffer: Int
    
-    @Parameter(title: "TrainTimeBuffer", default: 3)
+    @Parameter(title: "Train Time Buffer", default: 3)
     var TrainTimeBuffer: Int
     
     @Parameter(title: "Train Direction", default: .toOomiya)
     var TrainDirection: UDBusCountDownTrainDirection
     
-    @Parameter(title: "Avoid ShonanShinjuku or Rapid train", default: false)
+    @Parameter(title: "Avoid Shonan-Shinjuku or Rapid train", default: false)
     var AvoidShonanShinjuku: Bool
     
     init(){}

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		135AEB5A304ED80000D89D28 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 135AEB59304ED80000D89D28 /* Localizable.xcstrings */; };
+		135AEB5B304ED80000D89D28 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 135AEB59304ED80000D89D28 /* Localizable.xcstrings */; };
 		E4190C233035CC9C007429C3 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4190C223035CC9C007429C3 /* WidgetKit.framework */; };
 		E4190C253035CC9C007429C3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4190C243035CC9C007429C3 /* SwiftUI.framework */; };
 		E4190C303035CC9D007429C3 /* UDBusTimeTableWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4190C203035CC9C007429C3 /* UDBusTimeTableWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -37,6 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		135AEB59304ED80000D89D28 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		137DDC9930443383007C4FD7 /* UDBusTimeTable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = UDBusTimeTable.xcodeproj; sourceTree = "<group>"; };
 		E4190C003035CBA1007429C3 /* UDBusTimeTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UDBusTimeTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4190C203035CC9C007429C3 /* UDBusTimeTableWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UDBusTimeTableWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +114,7 @@
 		E4190BF73035CBA1007429C3 = {
 			isa = PBXGroup;
 			children = (
+				135AEB59304ED80000D89D28 /* Localizable.xcstrings */,
 				E4190C023035CBA1007429C3 /* UDBusTimeTable */,
 				E4190C263035CC9C007429C3 /* UDBusTimeTableWidget */,
 				E4190C213035CC9C007429C3 /* Frameworks */,
@@ -212,6 +216,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = E4190BF73035CBA1007429C3;
 			minimizedProjectReferenceProxies = 1;
@@ -237,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				135AEB5A304ED80000D89D28 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				135AEB5B304ED80000D89D28 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +342,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -392,6 +400,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -418,7 +427,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -453,7 +462,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -484,7 +493,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -515,7 +524,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

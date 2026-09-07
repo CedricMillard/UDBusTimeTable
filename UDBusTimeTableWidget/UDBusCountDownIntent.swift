@@ -62,7 +62,7 @@ enum UDBusCountDownTrainDirection: String, AppEnum {
 }
 
 struct UDBusCountDownIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "UDBus CountDown Settings"
+    static var title: LocalizedStringResource = "UD Bus CountDown Settings"
     static var description: LocalizedStringResource = "Choose next bus or next train countdown"
     
     // An example configurable parameter.
@@ -75,7 +75,7 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
     @Parameter(title: "Train Direction", default: .toOomiya)
     var TrainDirection: UDBusCountDownTrainDirection?
     
-    @Parameter(title: "Avoid ShonanShinjuku or Rapid", default: false)
+    @Parameter(title: "Avoid Shonan-Shinjuku or Rapid train", default: false)
     var AvoidShonanShinjuku: Bool?
     
     init(){}

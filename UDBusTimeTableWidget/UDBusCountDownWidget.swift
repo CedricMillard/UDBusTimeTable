@@ -22,7 +22,7 @@ struct UDBusCountDownWidget: Widget {
                     .background()
             }
         }
-        .configurationDisplayName("UD Bus Train count-down Widget")
+        .configurationDisplayName("UD Bus Train CountDown Widget")
         .description("Widget showing the time left to the next bus or train from UD Ageo Plant towards Oomiya")
         .supportedFamilies([.accessoryCircular])
     }

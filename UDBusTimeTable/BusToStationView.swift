@@ -260,7 +260,7 @@ struct SettingsView: View {
                     .font(.title)
                 HStack{
                     Spacer()
-                    Text("Bus Time Buffer: ")
+                    Text("Bus Time Buffer")
                         .frame(width:150)
                     Picker("Buffer time to catch bus", selection: $BusTimeBuffer){
                         ForEach(0...15,id:\.self){number in
@@ -280,10 +280,10 @@ struct SettingsView: View {
                 }
                 HStack{
                     Spacer()
-                    Text("Train Direction: ")
+                    Text("Train Direction")
                         .frame(width:150)
 
-                    Picker("TrainDirection", selection: $TrainDirection){
+                    Picker("Train Direction", selection: $TrainDirection){
                         ForEach(directions,id:\.self){dir in
                             Text(dir)
                         }
@@ -299,7 +299,7 @@ struct SettingsView: View {
                 }
                 HStack{
                     Spacer()
-                    Text("Train Time Buffer: ")
+                    Text("Train Time Buffer")
                         .frame(width:150)
 
                     Picker("Buffer time to catch train", selection: $TrainTimeBuffer){
@@ -319,7 +319,7 @@ struct SettingsView: View {
                 }
                 .opacity(TrainDirection == "No Train" ? 0 : 1)
                 
-                Toggle("Avoid Shonan Shinjuku or Rapid",isOn:$AvoidShonanShinjuku)
+                Toggle("Avoid Shonan-Shinjuku or Rapid train",isOn:$AvoidShonanShinjuku)
                     .frame(width:300)
                     .opacity(TrainDirection == "No Train" ? 0 : 1)
                     .onChange(of: AvoidShonanShinjuku) { oldvalue, newvalue in

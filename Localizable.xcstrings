@@ -1,0 +1,487 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    " → Kagohara" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " → 籠原駅"
+          }
+        }
+      }
+    },
+    " → Oomiya" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " → 大宮駅"
+          }
+        }
+      }
+    },
+    "/" : {
+      "shouldTranslate" : false
+    },
+    "%lld" : {
+      "shouldTranslate" : false
+    },
+    "%lld H" : {
+      "shouldTranslate" : false
+    },
+    "→Ageo" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "→上尾駅"
+          }
+        }
+      }
+    },
+    "→Kago." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " → 籠原駅"
+          }
+        }
+      }
+    },
+    "→Kagoha" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " → 籠原駅"
+          }
+        }
+      }
+    },
+    "→Oomiya" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " →大宮駅"
+          }
+        }
+      }
+    },
+    "→UD" : {
+      "shouldTranslate" : false
+    },
+    ">" : {
+      "shouldTranslate" : false
+    },
+    "Ageo Station → UD Plant" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上尾駅→UD工場"
+          }
+        }
+      }
+    },
+    "Avoid Shonan-Shinjuku or Rapid train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "湘南新宿ラインか快速を避ける"
+          }
+        }
+      }
+    },
+    "Buffer time to catch bus" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バスに間に合うための余裕時間"
+          }
+        }
+      }
+    },
+    "Buffer time to catch train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列車に乗るための余裕時間"
+          }
+        }
+      }
+    },
+    "Bus" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バス"
+          }
+        }
+      }
+    },
+    "Bus Direction" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バスの進行方向"
+          }
+        }
+      }
+    },
+    "Bus not in service on public holidays" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "赤字：祝日運休"
+          }
+        }
+      }
+    },
+    "Bus Time Buffer" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バスの運行間隔の余裕"
+          }
+        }
+      }
+    },
+    "Choose next bus or next train countdown" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のバスまたは列車のカウントダウンを選択"
+          }
+        }
+      }
+    },
+    "Configure buffer time for bus and train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バスと列車のバッファ時間を設定する"
+          }
+        }
+      }
+    },
+    "Countdown for " : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カウントダウン"
+          }
+        }
+      }
+    },
+    "Countdown Type" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カウントダウン型"
+          }
+        }
+      }
+    },
+    "Local train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各駅停車"
+          }
+        }
+      }
+    },
+    "Next Bus" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のバス"
+          }
+        }
+      }
+    },
+    "Next Train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の列車"
+          }
+        }
+      }
+    },
+    "Not supported" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サポートされていません"
+          }
+        }
+      }
+    },
+    "Provided to you by Cédric Millard" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セドリックミラールがお届けします"
+          }
+        }
+      }
+    },
+    "Rapid Train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速列車"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        }
+      }
+    },
+    "Shonan-Shinjuku line" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "湘南新宿ライン"
+          }
+        }
+      }
+    },
+    "Smart Change (time)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スマート・チェンジ（時）"
+          }
+        }
+      }
+    },
+    "towards Ageo Station" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上尾駅方面へ"
+          }
+        }
+      }
+    },
+    "towards Kagohara" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "籠原駅方面へ"
+          }
+        }
+      }
+    },
+    "towards Oomiya" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大宮駅方面へ"
+          }
+        }
+      }
+    },
+    "towards UD Plan" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD工場方面へ"
+          }
+        }
+      }
+    },
+    "Train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列車"
+          }
+        }
+      }
+    },
+    "Train Direction" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列車の進行方向"
+          }
+        }
+      }
+    },
+    "Train Time Buffer" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列車の運行間隔の余裕"
+          }
+        }
+      }
+    },
+    "UD Bus" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD通勤バス"
+          }
+        }
+      }
+    },
+    "UD Bus & Train timetable" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD通勤バスと列車時刻表"
+          }
+        }
+      }
+    },
+    "UD Bus CountDown Settings" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD通勤バス・カウントダウン設定"
+          }
+        }
+      }
+    },
+    "UD Bus timetable" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD通勤バス時刻表"
+          }
+        }
+      }
+    },
+    "UD Bus Train CountDown Widget" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD 通勤バス・電車カウントダウンウィジェット"
+          }
+        }
+      }
+    },
+    "UD Bus Train Timetable Widget" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD通勤 バス・鉄道時刻表ウィジェット"
+          }
+        }
+      }
+    },
+    "UD Bus Widget Settings" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UDバスウィジェット設定"
+          }
+        }
+      }
+    },
+    "UD Plant → Ageo Station" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD工場→上尾駅"
+          }
+        }
+      }
+    },
+    "UD→Ageo" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD→上尾駅"
+          }
+        }
+      }
+    },
+    "UDBusTimeTable version %@" : {
+      "shouldTranslate" : false
+    },
+    "Ueno-Tokyo line" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上野東京ライン"
+          }
+        }
+      }
+    },
+    "Widget showing the next bus from UD Ageo Plant and connecting train towards Oomiya or Kagohara" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD上尾工場からの次のバスと、大宮または籠原方面への接続列車を表示するウィジェット"
+          }
+        }
+      }
+    },
+    "Widget showing the time left to the next bus or train from UD Ageo Plant towards Oomiya" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD上尾工場から大宮方面への次のバスまたは電車までの残り時間を表示するウィジェット"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
