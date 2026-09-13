@@ -60,7 +60,7 @@ struct UDBusCountDownProvider: AppIntentTimelineProvider {
         let TrainDirection = configuration.TrainDirection
         
         if BusDirection == .autoTime {
-            BusDirection = (currentHour < 12) ? .toPlant : .toStation
+            BusDirection = (currentHour < 12 || currentHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60)) ? .toPlant : .toStation
         }
         
         let entries: [UDBusCountDownEntry] = getBusOrTrainDatePerHour (iHour: currentHour, CountDownType: CountDownType,iAvoidShonanShinjuku: AvoidShonanShinjuku ?? false, iBusDirection: BusDirection ?? .toStation, iTrainDirection: TrainDirection ?? .toOomiya, iAddOneExtra: true)

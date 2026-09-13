@@ -97,27 +97,11 @@ struct UDBusCountDownIntent: WidgetConfigurationIntent {
             }
             Case(.train)
             {
-                /*Switch(\.$TrainDirection){
-                    Case(.toOomiya) {*/
-                        Summary {
-                            \.$countDownType
-                            \.$TrainDirection
-                            \.$AvoidShonanShinjuku
-                        }/*
-                    }
-                    Case(.toKagohara) {
-                        Summary{
-                            \.$countDownType
-                            \.$TrainDirection
-                        }
-                    }
-                    DefaultCase{
-                        Summary {
-                            \.$countDownType
-                            \.$TrainDirection
-                        }
-                    }
-                }*/
+                Summary {
+                    \.$countDownType
+                    \.$TrainDirection
+                    \.$AvoidShonanShinjuku
+                }
             }
             DefaultCase {
                 Summary {

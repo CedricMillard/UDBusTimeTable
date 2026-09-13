@@ -12,6 +12,7 @@
 
 import Foundation
 import SwiftUI
+import AppIntents
 
 let stdBusDuration = 9
 
@@ -44,6 +45,25 @@ struct BusTrainTimeTable: Hashable, Codable, Identifiable {
     let prevTrain : [TrainData]
     let curTrain : [TrainData]
     let nextTrain : [TrainData]
+}
+
+enum UDBusTrainDirection: String, AppEnum, CaseIterable, Identifiable {
+    case toOomiya = "Oomiya"
+    case toKagohara = "Kagohara"
+    case noTrain = "No Train"
+    var id: String {self.rawValue}
+    
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        "Train Direction"
+    }
+    
+    static var caseDisplayRepresentations: [UDBusTrainDirection : DisplayRepresentation] {
+        [
+            .toOomiya: DisplayRepresentation(title: LocalizedStringResource("towards Oomiya")),
+            .toKagohara: DisplayRepresentation(title: LocalizedStringResource("towards Kagohara")),
+            .noTrain: DisplayRepresentation(title: LocalizedStringResource("No Train"))
+        ]
+    }
 }
 
 func timeToString(iTime: Int) -> String {
@@ -120,26 +140,26 @@ func getNext3BusToAgeo(iTime: Int, BusTimeBuffer: Int)->[BusData] {
     return [prevBusTime, curBusTime, nextBusTime]
 }
 
-func getTrainsFromBuses(iBuses: [BusData], TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku: Bool)->[[TrainData]] {
+func getTrainsFromBuses(iBuses: [BusData], TrainTimeBuffer:Int, iTrainDirection:UDBusTrainDirection, AvoidShonanShinjuku: Bool)->[[TrainData]] {
     var trains:[[TrainData]] = []
     
     for bus in iBuses {
-        trains.append(getNextTrainFromBus(iBus: bus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya:iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku))
+        trains.append(getNextTrainFromBus(iBus: bus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection:iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku))
     }
 
     return trains
 }
 
-func getNextTrainFromBus(iBus: BusData, TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku:Bool)->[TrainData] {
+func getNextTrainFromBus(iBus: BusData, TrainTimeBuffer:Int, iTrainDirection:UDBusTrainDirection, AvoidShonanShinjuku:Bool)->[TrainData] {
 
     var trains:[TrainData] = []
     var busDuration = stdBusDuration
     var trainTable = TrainToOomiya
-    if !iToOomiya {
+    if iTrainDirection == .toKagohara {
         trainTable = TrainToKagohara
     }
 
-    if(iBus.departureTime < 0) {
+    if(iBus.departureTime < 0 || iTrainDirection == .noTrain) {
         trains.append(TrainData(departureTime: -1, isShonan: false))
     }
     else
@@ -170,7 +190,7 @@ func getNextTrainFromBus(iBus: BusData, TrainTimeBuffer:Int, iToOomiya:Bool, Avo
 
 //Return the data needed for the widget for a full hour
 // iHour = hour (eg 18 for 18Hxx) 
-func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToOomiya:Bool, AvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[BusTrainTimeTable] {
+func getBusTrainTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iTrainDirection:UDBusTrainDirection, AvoidShonanShinjuku:Bool, iAddOneExtra:Bool)->[BusTrainTimeTable] {
     var listTimeTables: [BusTrainTimeTable]=[]
     //If hour is before the first bus
     if iHour < Int(UDtoAgeo[0].departureTime/60) {
@@ -179,7 +199,7 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToO
                                                 nextBus: UDtoAgeo[0],
                                                 prevTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
-                                                nextTrain: getNextTrainFromBus(iBus: UDtoAgeo[0],TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya ,AvoidShonanShinjuku: AvoidShonanShinjuku)
+                                                nextTrain: getNextTrainFromBus(iBus: UDtoAgeo[0],TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection ,AvoidShonanShinjuku: AvoidShonanShinjuku)
                                                 ))
         return listTimeTables
     }
@@ -189,7 +209,7 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToO
         listTimeTables.append(BusTrainTimeTable(prevBus: UDtoAgeo[UDtoAgeo.count-1], 
                                                 curBus: BusData(departureTime: -1, duration: -1),
                                                 nextBus: BusData(departureTime: -1, duration: -1),
-                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1],TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku),
+                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1],TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku),
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
         
@@ -211,9 +231,9 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToO
             let prevBus = getBusFromIndex(iIndex: i-1)
             let nextBus = getBusFromIndex(iIndex: i+1)
 
-            let curTrain = getNextTrainFromBus(iBus: curBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
-            let prevTrain = getNextTrainFromBus(iBus: prevBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
-            let nextTrain = getNextTrainFromBus(iBus: nextBus, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let curTrain = getNextTrainFromBus(iBus: curBus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let prevTrain = getNextTrainFromBus(iBus: prevBus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku)
+            let nextTrain = getNextTrainFromBus(iBus: nextBus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku)
 
             listTimeTables.append(BusTrainTimeTable(prevBus: prevBus,
                                                     curBus: curBus,
@@ -228,12 +248,82 @@ func getTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:Int, iToO
         listTimeTables.append(BusTrainTimeTable(prevBus: UDtoAgeo[UDtoAgeo.count-1],
                                                 curBus: BusData(departureTime: -1, duration: -1),
                                                 nextBus: BusData(departureTime: -1, duration: -1),
-                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1], TrainTimeBuffer: TrainTimeBuffer, iToOomiya: iToOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku),
+                                                prevTrain: getNextTrainFromBus(iBus: UDtoAgeo[UDtoAgeo.count-1], TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku),
                                                 curTrain: [TrainData(departureTime: -1, isShonan: false)],
                                                 nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
     }
     return listTimeTables
 }
+
+//Return the data needed for the widget for a full hour
+// iHour = hour (eg 18 for 18Hxx)
+func getBusTimeTablePerHour(iHour:Int, toStation:Bool, BusTimeBuffer:Int, iAddOneExtra:Bool)->[BusTrainTimeTable] {
+    
+    var busList = UDtoAgeo
+    if !toStation {
+        busList = AgeotoUD
+    }
+    
+    var listTimeTables: [BusTrainTimeTable]=[]
+    //If hour is before the first bus
+    if iHour < Int(busList[0].departureTime/60) {
+        listTimeTables.append(BusTrainTimeTable(prevBus: BusData(departureTime: -1, duration: -1),
+                                                curBus: BusData(departureTime: -1, duration: -1),
+                                                nextBus: busList[0],
+                                                prevTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                curTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                nextTrain: [TrainData(departureTime: -1, isShonan: false)]
+                                                ))
+        return listTimeTables
+    }
+    
+    //If hour is after the last bus
+    if iHour > Int(busList[busList.count-1].departureTime/60) {
+        listTimeTables.append(BusTrainTimeTable(prevBus: busList[busList.count-1],
+                                                curBus: BusData(departureTime: -1, duration: -1),
+                                                nextBus: BusData(departureTime: -1, duration: -1),
+                                                prevTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                curTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
+        
+        return listTimeTables
+    }
+
+    //Go through the timetable to find suitable bus
+    for i in 0..<busList.count {
+        //If not adding extra, stop when current bus time is above hour
+        //If add extra, continut until previous bus time display is on next hour
+        if (!iAddOneExtra && busList[i].departureTime>=(iHour+1)*60) ||
+            (iAddOneExtra && getBusFromIndex(iIndex: i-1).departureTime-BusTimeBuffer+1>(iHour+1)*60) {
+                break
+        }
+            
+        if busList[i].departureTime>=iHour*60 {
+        
+            let curBus = getBusFromIndex(iIndex: i)
+            let prevBus = getBusFromIndex(iIndex: i-1)
+            let nextBus = getBusFromIndex(iIndex: i+1)
+
+            listTimeTables.append(BusTrainTimeTable(prevBus: prevBus,
+                                                    curBus: curBus,
+                                                    nextBus: nextBus,
+                                                    prevTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                    curTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                    nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
+        }
+    }
+    //If we reached the last bus (not next bus), add one dummy bus
+    if iAddOneExtra && listTimeTables[listTimeTables.count-1].nextBus.departureTime<0 {
+        listTimeTables.append(BusTrainTimeTable(prevBus: busList[busList.count-1],
+                                                curBus: BusData(departureTime: -1, duration: -1),
+                                                nextBus: BusData(departureTime: -1, duration: -1),
+                                                prevTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                curTrain: [TrainData(departureTime: -1, isShonan: false)],
+                                                nextTrain: [TrainData(departureTime: -1, isShonan: false)]))
+    }
+    return listTimeTables
+}
+
 
 func time2Date(iTime:Int) -> Date {
     //In case we are past 24 hourss
@@ -248,7 +338,7 @@ func time2Date(iTime:Int) -> Date {
     return output
 }
 
-//Return the list of bus departure time for a given hour
+//Return the list of bus departure time for a given hour for the Widget
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next bus from next hour for the widget
 func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false, iAddOneExtra:Bool)->[CountDownDataRaw] {
@@ -301,7 +391,7 @@ func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false, iAddOneExtra:Bool)->[
     return listTimes
 }
 
-//Return the list of bus departure time for a given hour
+//Return the list of bus departure time for a given hour for the main App
 // iHour = hour (eg 18 for 18Hxx)
 // iAddOneExtra = add next bus from next hour for the widget
 func getBusTimePerHour(iHour:Int, isBusToPlant:Bool=false)->[BusData] {
@@ -414,3 +504,4 @@ func getBusFontColor (iIsOperateRedDays:Bool)->Color {
     if !iIsOperateRedDays {return .orange}
     return .primary
 }
+

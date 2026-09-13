@@ -11,27 +11,61 @@ struct UDBusIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "UD Bus Widget Settings"
     static var description: LocalizedStringResource = "Configure buffer time for bus and train"
     
-    @Parameter(title: "Bus Time Buffer", default: 5)
-    var BusTimeBuffer: Int
-   
-    @Parameter(title: "Train Time Buffer", default: 3)
-    var TrainTimeBuffer: Int
+    @Parameter(title: "Bus Direction", default: .autoTime)
+    var BusDirection: UDBusCountDownBusDirection
     
+    @Parameter(title: "Bus Time Buffer", default: 5)
+    var BusTimeBuffer: Int?
+   
     @Parameter(title: "Train Direction", default: .toOomiya)
-    var TrainDirection: UDBusCountDownTrainDirection
+    var TrainDirection: UDBusTrainDirection?
+    
+    @Parameter(title: "Train Time Buffer", default: 3)
+    var TrainTimeBuffer: Int?
     
     @Parameter(title: "Avoid Shonan-Shinjuku or Rapid train", default: false)
-    var AvoidShonanShinjuku: Bool
+    var AvoidShonanShinjuku: Bool?
     
     init(){}
     
-    init(BusTimeBuffer: Int, TrainTimeBuffer: Int, TrainDirection:UDBusCountDownTrainDirection, AvoidShonanShinjuku: Bool) {
+    init(BusDirection: UDBusCountDownBusDirection, BusTimeBuffer: Int, TrainDirection:UDBusTrainDirection, TrainTimeBuffer: Int, AvoidShonanShinjuku: Bool) {
+        self.BusDirection = BusDirection
         self.BusTimeBuffer = BusTimeBuffer
-        self.TrainTimeBuffer = TrainTimeBuffer
         self.TrainDirection = TrainDirection
+        self.TrainTimeBuffer = TrainTimeBuffer
         self.AvoidShonanShinjuku = AvoidShonanShinjuku
     }
 
+    static var parameterSummary: some ParameterSummary {
+        Switch(\.$BusDirection){
+            Case(.toPlant){
+                Summary{
+                    \.$BusDirection
+                }
+            }
+            DefaultCase {
+                Switch(\.$TrainDirection) {
+                    Case(.noTrain) {
+                        Summary {
+                            \.$BusDirection
+                            \.$BusTimeBuffer
+                            \.$TrainDirection
+                        }
+                    }
+                    DefaultCase {
+                        Summary {
+                            \.$BusDirection
+                            \.$BusTimeBuffer
+                            \.$TrainDirection
+                            \.$TrainTimeBuffer
+                            \.$AvoidShonanShinjuku
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func perform () async throws -> some IntentResult {
         return .result()
     }

@@ -89,6 +89,16 @@
         }
       }
     },
+    "Ageo→UD" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UD工場→上尾駅"
+          }
+        }
+      }
+    },
     "Avoid Shonan-Shinjuku or Rapid train" : {
       "localizations" : {
         "ja" : {
@@ -225,6 +235,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次の列車"
+          }
+        }
+      }
+    },
+    "No Train" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列車なし"
           }
         }
       }

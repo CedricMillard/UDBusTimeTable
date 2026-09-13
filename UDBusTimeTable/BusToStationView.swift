@@ -187,9 +187,10 @@ struct HourlyContentView: View {
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
     
     var body: some View {
-        let toOomiya = (TrainDirection == "Oomiya")
         
-        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: toOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
+        let TrainDirection2 = getTrainDirectionFromString (iDirection: TrainDirection)
+        
+        let lHourlyTables: [BusTrainTimeTable] = getBusTrainTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: TrainDirection2, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
         let nextBusIndex = getNextBusToAgeo(iTime: currentTime, BusTimeBuffer: BusTimeBuffer)
         let nextBus = getBusFromIndex(iIndex: nextBusIndex)
         
@@ -241,6 +242,21 @@ struct HourlyContentView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
     }
+    
+    func getTrainDirectionFromString (iDirection:String) -> UDBusTrainDirection {
+        var TrainDirection:UDBusTrainDirection
+        switch iDirection {
+        case "Oomiya":
+            TrainDirection = .toOomiya
+        case "Kagohara":
+            TrainDirection = .toKagohara
+        case "No Train":
+            TrainDirection = .noTrain
+        default:
+            TrainDirection = .noTrain
+        }
+        return TrainDirection
+    }
 }
 
 struct SettingsView: View {
@@ -249,9 +265,11 @@ struct SettingsView: View {
     
     @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
-    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
+    //@AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
+    @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection: UDBusTrainDirection = .toOomiya
+    
     @AppStorage("AvoidShonanShinjuku", store: UserDefaults(suiteName: appGroupSuite)) private var AvoidShonanShinjuku = false
-    let directions = ["Oomiya", "Kagohara", "No Train"]
+    //let directions = ["Oomiya", "Kagohara", "No Train"]
     
     var body: some View {
             
@@ -284,8 +302,9 @@ struct SettingsView: View {
                         .frame(width:150)
 
                     Picker("Train Direction", selection: $TrainDirection){
-                        ForEach(directions,id:\.self){dir in
-                            Text(dir)
+                        ForEach(UDBusTrainDirection.allCases){dir in
+                            Text(UDBusTrainDirection.caseDisplayRepresentations[dir]?.title ?? LocalizedStringResource(stringLiteral:  dir.rawValue))
+                                .tag(dir)
                         }
                     }
                     .pickerStyle(.menu)
@@ -317,11 +336,11 @@ struct SettingsView: View {
                     }
                     Spacer()
                 }
-                .opacity(TrainDirection == "No Train" ? 0 : 1)
+                .opacity(TrainDirection == .noTrain ? 0 : 1)
                 
                 Toggle("Avoid Shonan-Shinjuku or Rapid train",isOn:$AvoidShonanShinjuku)
                     .frame(width:300)
-                    .opacity(TrainDirection == "No Train" ? 0 : 1)
+                    .opacity(TrainDirection == .noTrain ? 0 : 1)
                     .onChange(of: AvoidShonanShinjuku) { oldvalue, newvalue in
                         currentTime = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
                         //WidgetCenter.shared.reloadAllTimelines()

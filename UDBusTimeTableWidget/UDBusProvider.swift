@@ -10,7 +10,7 @@ import WidgetKit
 func getSampleTimeTable() -> UDBusEntry
 {
     let nextBus : [BusData] =  getNext3BusToAgeo(iTime: 17*60+55, BusTimeBuffer: 3)
-    let nextTrains:[[TrainData]] = getTrainsFromBuses(iBuses: nextBus, TrainTimeBuffer: 3, iToOomiya: true, AvoidShonanShinjuku: false)
+    let nextTrains:[[TrainData]] = getTrainsFromBuses(iBuses: nextBus, TrainTimeBuffer: 3, iTrainDirection: .toOomiya, AvoidShonanShinjuku: false)
     let timeTable = BusTrainTimeTable(prevBus: nextBus[0], curBus: nextBus[1], nextBus: nextBus[2], prevTrain: nextTrains[0], curTrain: nextTrains[1], nextTrain: nextTrains[2])
     let UDBusSampleEntry = UDBusEntry(date: Date(), timeTable: timeTable, busDirection: .toStation, trainDirection: .toOomiya)
     return UDBusSampleEntry
@@ -80,8 +80,8 @@ struct UDBusProvider: AppIntentTimelineProvider {
     
     func timeline(for configuration:UDBusIntent, in context: Context) async -> Timeline<Entry> {
         
-        let customDefaults = UserDefaults(suiteName: appGroupSuite) ?? .standard
-        let TrainDirectionOri = (customDefaults.object(forKey: "TrainDirection") != nil) ? customDefaults.string(forKey: "TrainDirection") : "Oomiya"
+        //let customDefaults = UserDefaults(suiteName: appGroupSuite) ?? .standard
+        //let TrainDirectionOri = (customDefaults.object(forKey: "TrainDirection") != nil) ? customDefaults.string(forKey: "TrainDirection") : "Oomiya"
         
         var entries: [UDBusEntry] = []
         
@@ -90,12 +90,25 @@ struct UDBusProvider: AppIntentTimelineProvider {
         let currentHour = (Calendar.current.component(.hour, from: currentDate))
         let roundedDate = Calendar.current.date(bySettingHour: currentHour, minute: 0, second: 0, of: currentDate) ?? currentDate
         
-        let TrainTimeBuffer = configuration.TrainTimeBuffer
-        let BusTimeBuffer = configuration.BusTimeBuffer
-        let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku
-        let TrainDirection = configuration.TrainDirection
+        var BusDirection = configuration.BusDirection
+        let BusTimeBuffer = configuration.BusTimeBuffer ?? 5
+        let TrainDirection = configuration.TrainDirection ?? .toOomiya
+        let TrainTimeBuffer = configuration.TrainTimeBuffer ?? 3
+        let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku ?? false
         
-        let lHourlyTables: [BusTrainTimeTable] = getTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iToOomiya: TrainDirection == .toOomiya, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
+        if BusDirection == .autoTime {
+            BusDirection = (currentHour < 12) ? .toPlant : .toStation
+        }
+        
+        var lHourlyTables: [BusTrainTimeTable] = []
+        
+        if BusDirection == .toStation {
+            lHourlyTables = getBusTrainTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: TrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
+        }
+        else {
+            lHourlyTables = getBusTimeTablePerHour(iHour: currentHour, toStation:false, BusTimeBuffer: BusTimeBuffer, iAddOneExtra: true)
+        }
+        
         for item in lHourlyTables {
             var refreshDate = roundedDate
             if item.prevBus.departureTime>0 {
@@ -105,7 +118,7 @@ struct UDBusProvider: AppIntentTimelineProvider {
                 refreshDate = Calendar.current.date(byAdding: .minute, value: 1-BusTimeBuffer, to: busDate) ?? currentDate
             }
             
-            let entry = UDBusEntry(date: refreshDate, timeTable: item, busDirection: .toStation, trainDirection: TrainDirection)
+            let entry = UDBusEntry(date: refreshDate, timeTable: item, busDirection: BusDirection, trainDirection: TrainDirection)
             
             entries.append(entry)
         }

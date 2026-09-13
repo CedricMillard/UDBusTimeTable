@@ -62,22 +62,31 @@ struct UDBusWidgetView : View {
         case .systemSmall:
             VStack {
                 HStack (spacing: 0) {
-                    Text("UD\u{2192}Ageo")
-                        .font(.footnote)
-                        .foregroundColor(Color.gray)
-                    Text(entry.trainDirection == .toOomiya ? "\u{2192}Oomiya" : entry.trainDirection == .toKagohara ? "\u{2192}Kagoha" : "")
-                        .font(.footnote)
-                        .foregroundColor(Color.gray)
+                    if entry.busDirection == .toStation {
+                        Text("UD\u{2192}Ageo")
+                            .font(.footnote)
+                            .foregroundColor(Color.gray)
+                        Text(entry.trainDirection == .toOomiya ? "\u{2192}Oomiya" : entry.trainDirection == .toKagohara ? "\u{2192}Kagoha" : "")
+                            .font(.footnote)
+                            .foregroundColor(Color.gray)
+                    }
+                    else {
+                        Text("Ageo\u{2192}UD")
+                            .font(.footnote)
+                            .foregroundColor(Color.gray)
+                    }
                 }
                 Spacer()
                 Grid(verticalSpacing: 5){
                     GridRow {
                         Text("Bus")
                             .bold()
-                        Text (">")
-                            .bold()
-                        Text("Train")
-                            .bold()
+                        if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                            Text (">")
+                                .bold()
+                            Text("Train")
+                                .bold()
+                        }
                     }
                     //Spacer()
                     Divider()
@@ -85,28 +94,30 @@ struct UDBusWidgetView : View {
                         Text(timeToString(iTime: entry.timeTable.prevBus.departureTime))
                             .font(.footnote)
                             .foregroundStyle(.gray)
-                        Text (">")
-                            .font(.footnote)
-                            .foregroundStyle(.gray)
-                        if entry.timeTable.prevTrain.count == 1 {
-                            Text(timeToString(iTime: entry.timeTable.prevTrain[0].departureTime))
+                        if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                            Text (">")
                                 .font(.footnote)
                                 .foregroundStyle(.gray)
-                        }
-                        else
-                        {
-                            Grid{
-                                
-                                GridRow{
-                                    Text(timeToString(iTime: entry.timeTable.prevTrain[1].departureTime))
-                                        .font(.footnote)
-                                        .foregroundStyle(.gray)
-                                }
-                                GridRow{
-                                    Text("("+timeToString(iTime: entry.timeTable.prevTrain[0].departureTime)+")")
-                                        .font(.caption2)
-                                        .foregroundStyle(.gray)
-                                        .italic()
+                            if entry.timeTable.prevTrain.count == 1 {
+                                Text(timeToString(iTime: entry.timeTable.prevTrain[0].departureTime))
+                                    .font(.footnote)
+                                    .foregroundStyle(.gray)
+                            }
+                            else
+                            {
+                                Grid{
+                                    
+                                    GridRow{
+                                        Text(timeToString(iTime: entry.timeTable.prevTrain[1].departureTime))
+                                            .font(.footnote)
+                                            .foregroundStyle(.gray)
+                                    }
+                                    GridRow{
+                                        Text("("+timeToString(iTime: entry.timeTable.prevTrain[0].departureTime)+")")
+                                            .font(.caption2)
+                                            .foregroundStyle(.gray)
+                                            .italic()
+                                    }
                                 }
                             }
                         }
@@ -117,31 +128,32 @@ struct UDBusWidgetView : View {
                             .bold()
                             .foregroundColor(getBusFontColor(iIsOperateRedDays: entry.timeTable.curBus.isActiveRedDays))
                         
-                        
-                        Text (">")
-                            .bold()
-                        
-                        if entry.timeTable.curTrain.count == 1 {
-                            Text(timeToString(iTime: entry.timeTable.curTrain[0].departureTime))
-                                .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[0].isShonan))
+                        if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                            Text (">")
                                 .bold()
-                        }
-                        else
-                        {
-                            Grid{
-                                
-                                GridRow{
-                                    Text(timeToString(iTime: entry.timeTable.curTrain[1].departureTime))
-                                        .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[1].isShonan))
-                                        .bold()
+                            
+                            if entry.timeTable.curTrain.count == 1 {
+                                Text(timeToString(iTime: entry.timeTable.curTrain[0].departureTime))
+                                    .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[0].isShonan))
+                                    .bold()
+                            }
+                            else
+                            {
+                                Grid{
+                                    
+                                    GridRow{
+                                        Text(timeToString(iTime: entry.timeTable.curTrain[1].departureTime))
+                                            .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[1].isShonan))
+                                            .bold()
+                                    }
+                                    GridRow{
+                                        Text("("+timeToString(iTime: entry.timeTable.curTrain[0].departureTime)+")")
+                                            .font(.footnote)
+                                            .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[0].isShonan))
+                                        //.bold( entry.timeTable.curTrain[0].isShonan)
+                                    }
+                                    
                                 }
-                                GridRow{
-                                    Text("("+timeToString(iTime: entry.timeTable.curTrain[0].departureTime)+")")
-                                        .font(.footnote)
-                                        .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.curTrain[0].isShonan))
-                                    //.bold( entry.timeTable.curTrain[0].isShonan)
-                                }
-                                
                             }
                         }
                     }
@@ -151,36 +163,36 @@ struct UDBusWidgetView : View {
                             .font(.footnote)
                             .foregroundColor(getBusFontColor(iIsOperateRedDays: entry.timeTable.nextBus.isActiveRedDays))
                         //.bold(!entry.timeTable.nextBus.isActiveRedDays)
-                        
-                        Text (">")
-                            .font(.footnote)
-                        
-                        if entry.timeTable.nextTrain.count == 1 {
-                            Text(timeToString(iTime: entry.timeTable.nextTrain[0].departureTime))
+                        if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                            Text (">")
                                 .font(.footnote)
-                                .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[0].isShonan))
-                            //.bold( entry.timeTable.nextTrain[0].isShonan)
-                        }
-                        else
-                        {
-                            Grid{
-                                GridRow{
-                                    Text(timeToString(iTime: entry.timeTable.nextTrain[1].departureTime))
-                                        .font(.footnote)
-                                        .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[1].isShonan))
-                                    //.bold( entry.timeTable.nextTrain[1].isShonan)
-                                }
-                                GridRow{
-                                    Text("("+timeToString(iTime: entry.timeTable.nextTrain[0].departureTime)+")")
-                                        .font(.caption2)
-                                        .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[0].isShonan))
-                                    //.bold( entry.timeTable.nextTrain[0].isShonan)
+                            
+                            if entry.timeTable.nextTrain.count == 1 {
+                                Text(timeToString(iTime: entry.timeTable.nextTrain[0].departureTime))
+                                    .font(.footnote)
+                                    .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[0].isShonan))
+                                //.bold( entry.timeTable.nextTrain[0].isShonan)
+                            }
+                            else
+                            {
+                                Grid{
+                                    GridRow{
+                                        Text(timeToString(iTime: entry.timeTable.nextTrain[1].departureTime))
+                                            .font(.footnote)
+                                            .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[1].isShonan))
+                                        //.bold( entry.timeTable.nextTrain[1].isShonan)
+                                    }
+                                    GridRow{
+                                        Text("("+timeToString(iTime: entry.timeTable.nextTrain[0].departureTime)+")")
+                                            .font(.caption2)
+                                            .foregroundColor(getTrainFontColor(iIsShonan: entry.timeTable.nextTrain[0].isShonan))
+                                        //.bold( entry.timeTable.nextTrain[0].isShonan)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                //Spacer()
             }
             
         default:
