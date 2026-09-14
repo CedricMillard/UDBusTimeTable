@@ -24,37 +24,64 @@ struct UDBusWidgetView : View {
         
         case .accessoryRectangular:
             VStack{
-                HStack {
-                    Text("UD Bus")
-                        .bold()
-                        .frame(width: 55)
-                    Text (">")
-                        .bold()
-                        .frame(width: 10)
-                    Text("Train")
-                        .bold()
-                        .frame(width: 55)
+                HStack(spacing: 0) {
+                    if entry.busDirection == .toPlant {
+                        Text("Ageo")
+                            .bold()
+                            //.frame(width: 40)
+                        Text("\u{2192}")
+                            .bold()
+                        Text("UD")
+                            .bold()
+                            //.frame(width: 40)
+                    }
+                    else {
+                        Text("UD")
+                            .bold()
+                        //.frame(width: 40)
+                        Text("\u{2192}")
+                            .bold()
+                        Text("Ageo")
+                            .bold()
+                            //.frame(width: 40)
+                    }
+                    if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                        Text("\u{2192}")
+                            .bold()
+                        if entry.trainDirection == .toOomiya {
+                            Text("Oomiya")
+                                .bold()
+                                //.frame(width: 40)
+                        }
+                        else {
+                            Text("Kagoha")
+                                .bold()
+                                //.frame(width: 40)
+                        }
+                    }
                 }
                 Divider()
                 HStack{
                     Text(timeToString(iTime: entry.timeTable.curBus.departureTime))
                         .frame(width: 55)
-                    Text (">")
-                        .frame(width: 10)
-                    if entry.timeTable.curTrain.count==1 {
-                        Text(timeToString(iTime: entry.timeTable.curTrain[0].departureTime))
-                            .italic(entry.timeTable.curTrain[0].isShonan)
-                            .frame(width: 55)
-                    }
-                    else {
-                        VStack {
-                            Text(timeToString(iTime: entry.timeTable.curTrain[1].departureTime))
-                                .italic(entry.timeTable.curTrain[1].isShonan)
-                            Text("("+timeToString(iTime: entry.timeTable.curTrain[0].departureTime)+")")
-                                .font(.footnote)
-                                .italic(entry.timeTable.curTrain[1].isShonan)
+                    if entry.busDirection == .toStation && entry.trainDirection != .noTrain {
+                        Text (">")
+                            .frame(width: 10)
+                        if entry.timeTable.curTrain.count==1 {
+                            Text(timeToString(iTime: entry.timeTable.curTrain[0].departureTime))
+                                .italic(entry.timeTable.curTrain[0].isShonan)
+                                .frame(width: 55)
                         }
-                        .frame(width: 55)
+                        else {
+                            VStack {
+                                Text(timeToString(iTime: entry.timeTable.curTrain[1].departureTime))
+                                    .italic(entry.timeTable.curTrain[1].isShonan)
+                                Text("("+timeToString(iTime: entry.timeTable.curTrain[0].departureTime)+")")
+                                    .font(.footnote)
+                                    .italic(entry.timeTable.curTrain[1].isShonan)
+                            }
+                            .frame(width: 55)
+                        }
                     }
                 }
             }

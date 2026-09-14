@@ -79,7 +79,7 @@ func timeToString(iTime: Int) -> String {
     return sHour + ":" + sMin
 }
 
-func getBusFromIndex(iIndex: Int, isBusToPlant:Bool = false)->BusData {
+func getBusFromIndex(iIndex: Int, isBusToPlant:Bool)->BusData {
     var bus = BusData(departureTime:-1,duration:-1)
     var busList = UDtoAgeo
     if isBusToPlant {
@@ -221,15 +221,15 @@ func getBusTrainTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:I
         //If not adding extra, stop when current bus time is above hour
         //If add extra, continut until previous bus time display is on next hour
         if (!iAddOneExtra && UDtoAgeo[i].departureTime>=(iHour+1)*60) ||
-            (iAddOneExtra && getBusFromIndex(iIndex: i-1).departureTime-BusTimeBuffer+1>(iHour+1)*60) {
+            (iAddOneExtra && getBusFromIndex(iIndex: i-1,isBusToPlant: false).departureTime-BusTimeBuffer+1>(iHour+1)*60) {
                 break
         }
             
         if UDtoAgeo[i].departureTime>=iHour*60 {
         
-            let curBus = getBusFromIndex(iIndex: i) 
-            let prevBus = getBusFromIndex(iIndex: i-1)
-            let nextBus = getBusFromIndex(iIndex: i+1)
+            let curBus = getBusFromIndex(iIndex: i,isBusToPlant: false)
+            let prevBus = getBusFromIndex(iIndex: i-1,isBusToPlant: false)
+            let nextBus = getBusFromIndex(iIndex: i+1,isBusToPlant: false)
 
             let curTrain = getNextTrainFromBus(iBus: curBus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku)
             let prevTrain = getNextTrainFromBus(iBus: prevBus, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: iTrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku)
@@ -257,10 +257,10 @@ func getBusTrainTimeTablePerHour(iHour:Int, BusTimeBuffer:Int, TrainTimeBuffer:I
 
 //Return the data needed for the widget for a full hour
 // iHour = hour (eg 18 for 18Hxx)
-func getBusTimeTablePerHour(iHour:Int, toStation:Bool, BusTimeBuffer:Int, iAddOneExtra:Bool)->[BusTrainTimeTable] {
+func getBusTimeTablePerHour(iHour:Int, toPlant:Bool, BusTimeBuffer:Int, iAddOneExtra:Bool)->[BusTrainTimeTable] {
     
     var busList = UDtoAgeo
-    if !toStation {
+    if toPlant {
         busList = AgeotoUD
     }
     
@@ -294,15 +294,15 @@ func getBusTimeTablePerHour(iHour:Int, toStation:Bool, BusTimeBuffer:Int, iAddOn
         //If not adding extra, stop when current bus time is above hour
         //If add extra, continut until previous bus time display is on next hour
         if (!iAddOneExtra && busList[i].departureTime>=(iHour+1)*60) ||
-            (iAddOneExtra && getBusFromIndex(iIndex: i-1).departureTime-BusTimeBuffer+1>(iHour+1)*60) {
+            (iAddOneExtra && getBusFromIndex(iIndex: i-1, isBusToPlant: toPlant).departureTime-BusTimeBuffer+1>(iHour+1)*60) {
                 break
         }
             
         if busList[i].departureTime>=iHour*60 {
         
-            let curBus = getBusFromIndex(iIndex: i)
-            let prevBus = getBusFromIndex(iIndex: i-1)
-            let nextBus = getBusFromIndex(iIndex: i+1)
+            let curBus = getBusFromIndex(iIndex: i, isBusToPlant: toPlant)
+            let prevBus = getBusFromIndex(iIndex: i-1, isBusToPlant: toPlant)
+            let nextBus = getBusFromIndex(iIndex: i+1, isBusToPlant: toPlant)
 
             listTimeTables.append(BusTrainTimeTable(prevBus: prevBus,
                                                     curBus: curBus,

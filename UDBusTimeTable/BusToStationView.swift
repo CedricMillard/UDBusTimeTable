@@ -192,7 +192,7 @@ struct HourlyContentView: View {
         
         let lHourlyTables: [BusTrainTimeTable] = getBusTrainTimeTablePerHour(iHour: hour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: TrainDirection2, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: false)
         let nextBusIndex = getNextBusToAgeo(iTime: currentTime, BusTimeBuffer: BusTimeBuffer)
-        let nextBus = getBusFromIndex(iIndex: nextBusIndex)
+        let nextBus = getBusFromIndex(iIndex: nextBusIndex, isBusToPlant: false)
         
         ScrollView{
             

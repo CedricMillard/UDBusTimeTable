@@ -33,6 +33,9 @@
     "%lld H" : {
       "shouldTranslate" : false
     },
+    "→" : {
+
+    },
     "→Ageo" : {
       "localizations" : {
         "ja" : {
@@ -78,6 +81,9 @@
     },
     ">" : {
       "shouldTranslate" : false
+    },
+    "Ageo" : {
+
     },
     "Ageo Station → UD Plant" : {
       "localizations" : {
@@ -209,6 +215,9 @@
         }
       }
     },
+    "Kagoha" : {
+
+    },
     "Local train" : {
       "localizations" : {
         "ja" : {
@@ -258,6 +267,9 @@
           }
         }
       }
+    },
+    "Oomiya" : {
+
     },
     "Provided to you by Cédric Millard" : {
       "localizations" : {
@@ -379,7 +391,11 @@
         }
       }
     },
+    "UD" : {
+
+    },
     "UD Bus" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

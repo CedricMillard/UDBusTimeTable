@@ -106,7 +106,7 @@ struct UDBusProvider: AppIntentTimelineProvider {
             lHourlyTables = getBusTrainTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: TrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
         }
         else {
-            lHourlyTables = getBusTimeTablePerHour(iHour: currentHour, toStation:false, BusTimeBuffer: BusTimeBuffer, iAddOneExtra: true)
+            lHourlyTables = getBusTimeTablePerHour(iHour: currentHour, toPlant:true, BusTimeBuffer: BusTimeBuffer, iAddOneExtra: true)
         }
         
         for item in lHourlyTables {
