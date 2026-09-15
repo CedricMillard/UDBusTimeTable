@@ -34,7 +34,7 @@
       "shouldTranslate" : false
     },
     "→" : {
-
+      "shouldTranslate" : false
     },
     "→Ageo" : {
       "localizations" : {
@@ -83,7 +83,14 @@
       "shouldTranslate" : false
     },
     "Ageo" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上尾駅"
+          }
+        }
+      }
     },
     "Ageo Station → UD Plant" : {
       "localizations" : {
@@ -216,7 +223,14 @@
       }
     },
     "Kagoha" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "籠原駅"
+          }
+        }
+      }
     },
     "Local train" : {
       "localizations" : {
@@ -269,7 +283,14 @@
       }
     },
     "Oomiya" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大宮駅"
+          }
+        }
+      }
     },
     "Provided to you by Cédric Millard" : {
       "localizations" : {
@@ -351,7 +372,7 @@
         }
       }
     },
-    "towards UD Plan" : {
+    "towards UD Plant" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -392,18 +413,7 @@
       }
     },
     "UD" : {
-
-    },
-    "UD Bus" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UD通勤バス"
-          }
-        }
-      }
+      "shouldTranslate" : false
     },
     "UD Bus & Train timetable" : {
       "localizations" : {

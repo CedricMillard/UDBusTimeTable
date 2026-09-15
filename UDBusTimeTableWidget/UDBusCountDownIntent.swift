@@ -19,8 +19,8 @@ enum UDBusCountDownType: String, AppEnum {
     
     static var caseDisplayRepresentations: [UDBusCountDownType : DisplayRepresentation] {
         [
-            .bus: "Next Bus",
-            .train: "Next Train"
+            .bus: DisplayRepresentation(title: LocalizedStringResource("Next Bus")),
+            .train: DisplayRepresentation(title: LocalizedStringResource("Next Train"))
         ]
     }
 }
@@ -37,9 +37,9 @@ enum UDBusCountDownBusDirection: String, AppEnum {
     
     static var caseDisplayRepresentations: [UDBusCountDownBusDirection : DisplayRepresentation] {
         [
-            .toPlant: "towards UD Plan",
-            .toStation: "towards Ageo Station",
-            .autoTime: "Smart Change (time)"
+            .toPlant: DisplayRepresentation(title: LocalizedStringResource("towards UD Plant")),
+            .toStation: DisplayRepresentation(title: LocalizedStringResource("towards Ageo Station")),
+            .autoTime: DisplayRepresentation(title: LocalizedStringResource("Smart Change (time)"))
             //.autoLocation: "Smart Change (location)"
         ]
     }
@@ -55,8 +55,8 @@ enum UDBusCountDownTrainDirection: String, AppEnum {
     
     static var caseDisplayRepresentations: [UDBusCountDownTrainDirection : DisplayRepresentation] {
         [
-            .toOomiya: "towards Oomiya",
-            .toKagohara: "towards Kagohara",
+            .toOomiya: DisplayRepresentation(title: LocalizedStringResource("towards Oomiya")),
+            .toKagohara: DisplayRepresentation(title: LocalizedStringResource("towards Kagohara"))
         ]
     }
 }
