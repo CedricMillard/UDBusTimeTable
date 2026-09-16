@@ -90,7 +90,8 @@ struct BusToStationView: View {
                     }
                 })
                 {
-                    Text("\(hours[currentIndex]) H")
+                    Text(String(hours[currentIndex]))
+                    Text("H")
                 }
                 
                 Button(action:{

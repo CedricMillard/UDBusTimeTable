@@ -127,7 +127,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バスに間に合うための余裕時間"
+            "value" : "バスの乗り換え待ち時間"
           }
         }
       }
@@ -137,7 +137,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列車に乗るための余裕時間"
+            "value" : "電車の乗り換え待ち時間"
           }
         }
       }
@@ -177,7 +177,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バスの運行間隔の余裕"
+            "value" : "バスの乗り換え待ち時間"
           }
         }
       }
@@ -197,7 +197,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バスと列車のバッファ時間を設定する"
+            "value" : "バスと電車のバッファ時間を設定する"
           }
         }
       }
@@ -218,6 +218,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カウントダウン型"
+          }
+        }
+      }
+    },
+    "H" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時台"
           }
         }
       }
@@ -257,7 +267,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "次の列車"
+            "value" : "次の電車"
           }
         }
       }
@@ -387,7 +397,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列車"
+            "value" : "電車"
           }
         }
       }
@@ -397,7 +407,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列車の進行方向"
+            "value" : "電車の進行方向"
           }
         }
       }
@@ -407,7 +417,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列車の運行間隔の余裕"
+            "value" : "電車の乗り換え待ち時間"
           }
         }
       }
@@ -420,7 +430,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "UD通勤バスと列車時刻表"
+            "value" : "UD通勤バスと電車時刻表"
           }
         }
       }
@@ -513,7 +523,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "UD上尾工場からの次のバスと、大宮または籠原方面への接続列車を表示するウィジェット"
+            "value" : "UD上尾工場からの次のバスと、大宮または籠原方面への接続電車を表示するウィジェット"
           }
         }
       }
