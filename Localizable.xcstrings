@@ -172,12 +172,12 @@
         }
       }
     },
-    "Bus Time Buffer" : {
+    "Bus Time Buffer (minute)" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バスの乗り換え待ち時間"
+            "value" : "バスの乗り換え待ち時間(分)"
           }
         }
       }
@@ -422,12 +422,12 @@
         }
       }
     },
-    "Train Time Buffer" : {
+    "Train Time Buffer (minute)" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "電車の乗り換え待ち時間"
+            "value" : "電車の乗り換え待ち時間(分)"
           }
         }
       }

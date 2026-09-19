@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var currentTime: Int
     
-    @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 5
+    @AppStorage("BusTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var BusTimeBuffer = 1
     @AppStorage("TrainTimeBuffer", store: UserDefaults(suiteName: appGroupSuite)) private var TrainTimeBuffer = 3
     //@AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection = "Oomiya"
     @AppStorage("TrainDirection", store: UserDefaults(suiteName: appGroupSuite)) private var TrainDirection: UDBusTrainDirection = .toOomiya
@@ -27,7 +27,7 @@ struct SettingsView: View {
                     .font(.title)
                 HStack{
                     Spacer()
-                    Text("Bus Time Buffer")
+                    Text("Bus Time Buffer (minute)")
                         .frame(width:150)
                     Picker("Buffer time to catch bus", selection: $BusTimeBuffer){
                         ForEach(0...15,id:\.self){number in
@@ -67,7 +67,7 @@ struct SettingsView: View {
                 }
                 HStack{
                     Spacer()
-                    Text("Train Time Buffer")
+                    Text("Train Time Buffer (minute)")
                         .frame(width:150)
 
                     Picker("Buffer time to catch train", selection: $TrainTimeBuffer){
