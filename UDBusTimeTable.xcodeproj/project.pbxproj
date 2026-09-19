@@ -51,6 +51,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		139C39DE305E1806009FFE99 /* Exceptions for "UDBusTimeTable" folder in "UDBusTimeTable" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E4190BFF3035CBA1007429C3 /* UDBusTimeTable */;
+		};
+		139C39E8305E6019009FFE99 /* Exceptions for "UDBusTimeTableWidget" folder in "UDBusTimeTable" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = E4190BFF3035CBA1007429C3 /* UDBusTimeTable */;
+		};
 		E4190C343035CC9D007429C3 /* Exceptions for "UDBusTimeTableWidget" folder in "UDBusTimeTableWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -72,6 +86,7 @@
 		E4190C023035CBA1007429C3 /* UDBusTimeTable */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				139C39DE305E1806009FFE99 /* Exceptions for "UDBusTimeTable" folder in "UDBusTimeTable" target */,
 				E4190C413035CD35007429C3 /* Exceptions for "UDBusTimeTable" folder in "UDBusTimeTableWidgetExtension" target */,
 			);
 			path = UDBusTimeTable;
@@ -80,6 +95,7 @@
 		E4190C263035CC9C007429C3 /* UDBusTimeTableWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				139C39E8305E6019009FFE99 /* Exceptions for "UDBusTimeTableWidget" folder in "UDBusTimeTable" target */,
 				E4190C343035CC9D007429C3 /* Exceptions for "UDBusTimeTableWidget" folder in "UDBusTimeTableWidgetExtension" target */,
 			);
 			path = UDBusTimeTableWidget;
@@ -418,10 +434,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = UDBusTimeTable/UDBusTimeTable.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UDBusTimeTable/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Timetable";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -433,7 +450,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -453,10 +470,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = UDBusTimeTable/UDBusTimeTable.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UDBusTimeTable/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "UD Bus Timetable";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -468,7 +486,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -488,7 +506,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/UDBusTimeTableWidget/UDBusTimeTableWidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UDBusTimeTableWidget/Info.plist;
@@ -499,7 +517,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -519,7 +537,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/UDBusTimeTableWidget/UDBusTimeTableWidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = X9SNJ8LC9L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UDBusTimeTableWidget/Info.plist;
@@ -530,7 +548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.CMillard.UDBusTimeTable.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

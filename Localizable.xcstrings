@@ -322,6 +322,16 @@
         }
       }
     },
+    "Reset Map" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マップをリセットする"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "ja" : {
@@ -441,6 +451,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UD通勤バス・カウントダウン設定"
+          }
+        }
+      }
+    },
+    "UD Bus Stop" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UDのバス乗り場"
           }
         }
       }

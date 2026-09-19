@@ -14,12 +14,32 @@ struct BusToPlantView: View {
     
     @State private var currentIndex: Int = Calendar.current.component(.hour, from: today)+1
     @State private var currentTime: Int = Calendar.current.component(.hour, from: Date())*60 + Calendar.current.component(.minute, from: Date())
+    @State private var showMap = false
     
     var body: some View {
         
         VStack {
-            Text("UD Bus timetable")
-                .bold()
+            ZStack{
+                Text("UD Bus timetable")
+                    .bold()
+                HStack{
+                    Spacer()
+                    Button(action:{
+                        showMap.toggle()
+                    }) {
+                        Image(systemName: "map.circle.fill")
+                            .imageScale(.large)
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                    }
+                    .frame(width:100)
+                    .sheet(isPresented: $showMap){
+                        MapView()
+                            .presentationDetents([.medium])
+                            .presentationDragIndicator(.visible)
+                    }
+                }
+            }
             
             Spacer()
             Button(action: {
@@ -65,7 +85,7 @@ struct BusToPlantView: View {
             
             TabView(selection: $currentIndex) {
                 ForEach(0..<hours.count, id: \.self) { index in
-                                HourlyToPlantView(hour: hours[index], currentTime: $currentTime)
+                                HourlyContentView(hour: hours[index], isBusToPlant: true, currentTime: $currentTime)
                                     .tag(index)
                             }
                         }
@@ -116,38 +136,4 @@ struct BusToPlantView: View {
                 currentIndex += direction
             }
         }
-}
-
-struct HourlyToPlantView: View {
-    let hour: Int
-    @Binding var currentTime: Int
-    
-    var body: some View {
-        
-        let lHourlyTables: [BusData] = getBusTimePerHour(iHour:hour, isBusToPlant:true)
-        
-        let nextBusIndex = getNextBusToPlant(iTime: currentTime)
-        let nextBus = getBusFromIndex(iIndex: nextBusIndex, isBusToPlant: true)
-        
-        ScrollView{
-            
-            VStack {
-                    Text("Bus")
-                        .bold()
-                        .frame(width:100)
-                Divider()
-                
-                ForEach(lHourlyTables) { item in
-                    Text(timeToString(iTime: item.departureTime))
-                        .foregroundColor(getBusFontColor(iIsOperateRedDays: item.isActiveRedDays))
-                        .frame(width:100)
-                        .bold(item.departureTime == nextBus.departureTime)
-                        .padding((item.departureTime == nextBus.departureTime && nextBus.departureTime > 0) ? 2 : 0)
-                        .border((item.departureTime == nextBus.departureTime && nextBus.departureTime > 0) ? Color.green : Color.clear)
-                    Divider()
-                }
-            }
-        }
-        .scrollBounceBehavior(.basedOnSize)
-    }
 }
