@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import CoreLocation
 
 func getSampleCountDown() -> UDBusCountDownEntry
 {
@@ -19,6 +20,8 @@ func getSampleCountDown() -> UDBusCountDownEntry
 struct UDBusCountDownProvider: AppIntentTimelineProvider {
     typealias Entry = UDBusCountDownEntry
     typealias Intent = UDBusCountDownIntent
+    
+    private let fetcher = userLocationFetcher()
     
     func placeholder(in context: Context) -> UDBusCountDownEntry {
         getSampleCountDown()
@@ -59,7 +62,20 @@ struct UDBusCountDownProvider: AppIntentTimelineProvider {
         var BusDirection = configuration.BusDirection
         let TrainDirection = configuration.TrainDirection
         
-        if BusDirection == .autoTime {
+        //fetch user location and compare with plant location
+        let locManager = CLLocationManager()
+        if BusDirection == .autoLocation && locManager.isAuthorizedForWidgetUpdates {
+            let userLocation: CLLocation? = await withCheckedContinuation {continuation in
+                fetcher.fetch(accuracy: kCLLocationAccuracyReduced) { location in
+                    continuation.resume(returning: location)
+                }
+            }
+            if let userLocation = userLocation {
+                BusDirection = userLocation.distance(from: CLLocation(latitude: UDPlantLat, longitude: UDPlantLong)) < 1000 ? .toStation : .toPlant
+            }
+        }
+        
+        if BusDirection == .autoLocation || BusDirection == .autoTime {
             BusDirection = (currentHour < 12 || currentHour > Int(UDtoAgeo[UDtoAgeo.count-1].departureTime/60)) ? .toPlant : .toStation
         }
         

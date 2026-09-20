@@ -10,6 +10,9 @@ import Foundation
 let BusStopLat = 35.973064
 let BusStopLong = 139.587627
 
+let UDPlantLat = 35.952158
+let UDPlantLong = 139.579515
+
 let UDtoAgeo = [
                 BusData(departureTime:08*60+50,duration:10),
                 

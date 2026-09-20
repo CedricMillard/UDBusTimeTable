@@ -154,6 +154,7 @@ struct BusToStationView: View {
                 .italic()
         }
     }
+        
     
     private func handleLoop(targetIndex: Int) {
             // If they swipe left past Hour 0 into the buffer (Index 0 / Hour 23)

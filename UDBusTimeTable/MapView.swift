@@ -19,7 +19,7 @@ struct MapView: View {
         VStack {
             Map(position: $position,
                 interactionModes: [.zoom, .pan]) {
-                
+                UserAnnotation()
                 Annotation(String(localized: LocalizedStringResource("UD Bus Stop")),
                            coordinate: BustStopCoord, anchor:.bottom) {
                     VStack(spacing:0) {

@@ -29,7 +29,7 @@ enum UDBusCountDownBusDirection: String, AppEnum {
     case toPlant
     case toStation
     case autoTime
-    //case autoLocation
+    case autoLocation
     
     static var typeDisplayRepresentation: TypeDisplayRepresentation {
         "Bus Direction"
@@ -39,8 +39,8 @@ enum UDBusCountDownBusDirection: String, AppEnum {
         [
             .toPlant: DisplayRepresentation(title: LocalizedStringResource("towards UD Plant")),
             .toStation: DisplayRepresentation(title: LocalizedStringResource("towards Ageo Station")),
-            .autoTime: DisplayRepresentation(title: LocalizedStringResource("Smart Change (time)"))
-            //.autoLocation: "Smart Change (location)"
+            .autoTime: DisplayRepresentation(title: LocalizedStringResource("Smart Change (time)")),
+            .autoLocation: DisplayRepresentation(title: LocalizedStringResource("Smart Change (location)"))
         ]
     }
 }

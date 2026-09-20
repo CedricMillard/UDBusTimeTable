@@ -352,12 +352,22 @@
         }
       }
     },
+    "Smart Change (location)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スマート変更（位置）"
+          }
+        }
+      }
+    },
     "Smart Change (time)" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "スマート・チェンジ（時）"
+            "value" : "スマート変更（時間）"
           }
         }
       }
