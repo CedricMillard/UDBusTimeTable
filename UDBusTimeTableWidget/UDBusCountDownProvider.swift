@@ -66,12 +66,12 @@ struct UDBusCountDownProvider: AppIntentTimelineProvider {
         let locManager = CLLocationManager()
         if BusDirection == .autoLocation && locManager.isAuthorizedForWidgetUpdates {
             let userLocation: CLLocation? = await withCheckedContinuation {continuation in
-                fetcher.fetch(accuracy: kCLLocationAccuracyReduced) { location in
+                fetcher.fetch(accuracy: kCLLocationAccuracyKilometer) { location in
                     continuation.resume(returning: location)
                 }
             }
             if let userLocation = userLocation {
-                BusDirection = userLocation.distance(from: CLLocation(latitude: UDPlantLat, longitude: UDPlantLong)) < 1000 ? .toStation : .toPlant
+                BusDirection = userLocation.distance(from: CLLocation(latitude: UDPlantLat, longitude: UDPlantLong)) < 1200 ? .toStation : .toPlant
             }
         }
         

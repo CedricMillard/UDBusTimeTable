@@ -12,6 +12,13 @@ import SwiftUI
 struct UDBusCountDownView : View {
     var entry: UDBusCountDownProvider.Entry
     
+    func getDeltaTimeSec() -> Int {
+        guard Date()<entry.targetDate else {
+            return -1
+        }
+        return Int(DateInterval(start: Date(), end: entry.targetDate).duration)
+    }
+    
     var body: some View {
         ZStack {
             Circle()
@@ -26,8 +33,15 @@ struct UDBusCountDownView : View {
                     .frame(width: 40)
                     .foregroundStyle(.white)
                 
-                Text(entry.targetDate, style:.timer)
-                    .multilineTextAlignment(.center)
+                let deltaT = getDeltaTimeSec()
+                if deltaT < 3600 && deltaT >= 0 {
+                    Text(entry.targetDate, style:.timer)
+                        .multilineTextAlignment(.center)
+                }
+                else {
+                    Text("--:--")
+                        .multilineTextAlignment(.center)
+                }
                 
                 if entry.type == .bus {
                     if entry.busDirection == .toPlant {
@@ -56,32 +70,5 @@ struct UDBusCountDownView : View {
             }
         }
         .containerBackground(.clear, for: .widget)
-        /*Gauge(value:1) {
-            if entry.type == .bus {
-                if entry.busDirection == .toPlant {
-                    Text("S\u{2192}P")
-                        .bold()
-                }
-                else {
-                    Text("S\u{2190}P")
-                        .bold()
-                }
-            }
-            else {
-                if entry.trainDirection == .toOomiya {
-                    Text("\u{2192}Oo")
-                        .bold()
-                }
-                else {
-                    Text("\u{2192}Ka")
-                        .bold()
-                }
-            }
-        } currentValueLabel: {
-            Text(entry.targetDate, style:.timer)
-                .frame(maxWidth: .infinity,alignment: .center)
-                
-        }
-        .gaugeStyle(.accessoryCircular)*/
     }
 }

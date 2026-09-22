@@ -35,12 +35,12 @@ struct ContentView: View {
         
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             let userLocation: CLLocation? = await withCheckedContinuation {continuation in
-                fetcher.fetch(accuracy: kCLLocationAccuracyReduced)  { location in
+                fetcher.fetch(accuracy: kCLLocationAccuracyKilometer)  { location in
                     continuation.resume(returning: location)
                 }
             }
             if let userLocation = userLocation {
-                flip = userLocation.distance(from: CLLocation(latitude: UDPlantLat, longitude: UDPlantLong)) < 1000 ? false : true
+                flip = userLocation.distance(from: CLLocation(latitude: UDPlantLat, longitude: UDPlantLong)) < 1200 ? false : true
             }
         }
         

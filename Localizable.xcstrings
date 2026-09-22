@@ -24,6 +24,9 @@
         }
       }
     },
+    "--:--" : {
+      "shouldTranslate" : false
+    },
     "/" : {
       "shouldTranslate" : false
     },
