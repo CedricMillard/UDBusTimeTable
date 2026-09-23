@@ -52,7 +52,7 @@ struct UDBusProvider: AppIntentTimelineProvider {
          */
         
         var BusDirection = configuration.BusDirection
-        let BusTimeBuffer = configuration.BusTimeBuffer ?? 5
+        var BusTimeBuffer = configuration.BusTimeBuffer ?? 5
         let TrainDirection = configuration.TrainDirection ?? .toOomiya
         let TrainTimeBuffer = configuration.TrainTimeBuffer ?? 3
         let AvoidShonanShinjuku = configuration.AvoidShonanShinjuku ?? false
@@ -81,7 +81,8 @@ struct UDBusProvider: AppIntentTimelineProvider {
             lHourlyTables = getBusTrainTimeTablePerHour(iHour: currentHour, BusTimeBuffer: BusTimeBuffer, TrainTimeBuffer: TrainTimeBuffer, iTrainDirection: TrainDirection, AvoidShonanShinjuku: AvoidShonanShinjuku, iAddOneExtra: true)
         }
         else {
-            lHourlyTables = getBusTimeTablePerHour(iHour: currentHour, toPlant:true, BusTimeBuffer: 1, iAddOneExtra: true)
+            BusTimeBuffer = 1
+            lHourlyTables = getBusTimeTablePerHour(iHour: currentHour, toPlant:true, BusTimeBuffer: BusTimeBuffer, iAddOneExtra: true)
         }
         
         for item in lHourlyTables {
